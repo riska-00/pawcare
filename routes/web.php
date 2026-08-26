@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CatController;
-use App\Http\Controllers\CatReservationController;
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CatController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CatReservationController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,17 +17,64 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// CAT
-Route::resource('/cats', CatController::class);
 
-// PRODUCT
-Route::resource('/products', ProductController::class);
+$adminOnly = function ($request, $next) {
+    if (Auth::user()->role !== 'admin') {
+        abort(403);
+    }
+    return $next($request);
+};
 
-// CAT RESERVATION
-Route::resource('/cat_reservations', CatReservationController::class);
 
-// CART
-Route::get('/carts', [App\Http\Controllers\CartController::class, 'index'])->name('carts.index');
-Route::post('/carts', [App\Http\Controllers\CartController::class, 'store'])->name('carts.store');
-Route::put('/carts/{id}', [App\Http\Controllers\CartController::class, 'update'])->name('carts.update');
-Route::delete('/carts/{id}', [App\Http\Controllers\CartController::class, 'delete'])->name('carts.delete');
+Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
+Route::get('/cats/{cat}', [CatController::class, 'show'])->name('cats.show');
+
+Route::middleware(['auth', $adminOnly])->group(function () {
+    Route::get('/cats/create', [CatController::class, 'create'])->name('cats.create');
+    Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
+    Route::get('/cats/{cat}/edit', [CatController::class, 'edit'])->name('cats.edit');
+    Route::put('/cats/{cat}', [CatController::class, 'update'])->name('cats.update');
+    Route::delete('/cats/{cat}', [CatController::class, 'destroy'])->name('cats.destroy');
+});
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+Route::middleware(['auth', $adminOnly])->group(function () {
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/cat_reservations', [CatReservationController::class, 'index'])->name('cat_reservations.index');
+    Route::get('/cat_reservations/create', [CatReservationController::class, 'create'])->name('cat_reservations.create');
+    Route::post('/cat_reservations', [CatReservationController::class, 'store'])->name('cat_reservations.store');
+    Route::get('/cat_reservations/{id}', [CatReservationController::class, 'show'])->name('cat_reservations.show');
+    Route::put('/cat_reservations/{id}', [CatReservationController::class, 'update'])->name('cat_reservations.update');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
+    Route::post('/carts', [CartController::class, 'store'])->name('carts.store');
+    Route::put('/carts/{id}', [CartController::class, 'update'])->name('carts.update');
+    Route::delete('/carts/{id}', [CartController::class, 'destroy'])->name('carts.delete');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('payments.show');
+    Route::put('/payments/{id}', [PaymentController::class, 'update'])->name('payments.update');
+});
+ 

@@ -18,7 +18,7 @@ class CatSeeder extends Seeder
             'breed' => 'Persian',
             'age' => '2 tahun',
             'gender' => 'betina',
-            'price' => 2500000,
+            'price' => 2.500000,
             'photo' => null,
             'description' => 'Kucing Persian yang lucu dan ramah.',
             'status' => 'available',

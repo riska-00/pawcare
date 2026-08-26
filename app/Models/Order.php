@@ -14,6 +14,11 @@ class Order extends Model
         'status',
     ];
 
+    protected function casts(): array
+    {
+        return ['total_amount' => 'decimal:2'];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

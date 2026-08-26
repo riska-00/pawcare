@@ -14,6 +14,11 @@ class Product extends Model
         'photo',
         'description',
     ];
+
+    protected function casts(): array
+    {
+        return ['price' => 'decimal:2'];
+    }
     
      public function carts()
     {

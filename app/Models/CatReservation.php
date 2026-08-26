@@ -14,6 +14,11 @@ class CatReservation extends Model
         'status',
     ];
 
+    protected function casts(): array
+    {
+        return ['visit_date' => 'date'];
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

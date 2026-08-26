@@ -17,6 +17,11 @@ class Cat extends Model
         'status'
     ];
 
+    protected function casts(): array
+    {
+        return ['price' => 'decimal:2'];
+    }
+
     public function catReservations()
     {
         return $this->hasMany(CatReservation::class, 'cat_id');

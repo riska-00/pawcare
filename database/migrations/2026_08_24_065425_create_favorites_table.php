@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -21,6 +22,10 @@ return new class extends Migration
             $table->unique(['user_id', 'cat_id']);
             $table->unique(['user_id', 'product_id']);
         });
+
+        // setelah blueprint, tambahkan raw check constraint (MySQL 8.0.16+):
+        DB::statement('ALTER TABLE favorites ADD CONSTRAINT chk_favorite_target 
+            CHECK ((cat_id IS NOT NULL AND product_id IS NULL) OR (cat_id IS NULL AND product_id IS NOT NULL))');
     }
 
     /**

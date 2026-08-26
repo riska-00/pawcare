@@ -18,7 +18,7 @@ class OrderController extends Controller
         if (Auth::user()->role == 'admin') {
             $orders = Order::with('user')->latest()->get();
         } else {
-            $orders = Order::with(['OrderDetails.product', 'payment', 'shipment'])
+            $orders = Order::with(['orderDetails.product', 'payment', 'shipment'])
             ->where('user_id', Auth::id())->latest()->get();
         }
 

@@ -72,20 +72,30 @@ class CatReservationController extends Controller
 
     /**
      * Menampilkan bukti/detail reservasi.
+     * Bisa diakses oleh admin (siapa saja) atau pemilik reservasi itu sendiri.
      */
     public function show(string $id)
     {
         $catReservation = CatReservation::with('cat', 'user')
             ->findOrFail($id);
 
+        if (Auth::user()->role !== 'admin' && $catReservation->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('cat_reservations.show', compact('catReservation'));
     }
 
     /**
      * Mengubah status reservasi oleh admin.
+     * Hanya admin yang boleh mengubah status reservasi.
      */
     public function update(Request $request, string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $catReservation = CatReservation::with('cat')
             ->findOrFail($id);
 

@@ -13,6 +13,11 @@ class OrderDetail extends Model
         'price',
     ];
 
+    protected function casts(): array
+    {
+        return ['price' => 'decimal:2'];
+    }
+
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
