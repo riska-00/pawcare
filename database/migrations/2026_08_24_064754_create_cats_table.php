@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('breed');
-            $table->integer('age');
+            $table->string('age', 50);
             $table->enum('gender', ['jantan', 'betina']);
             $table->decimal('price', 12, 2);
             $table->string('photo')->nullable();
