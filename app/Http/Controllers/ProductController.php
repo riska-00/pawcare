@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Bebas diakses siapa saja.
      */
     public function index()
     {
@@ -19,17 +21,27 @@ class ProductController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * Khusus admin.
      */
     public function create()
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         return view('products.create');
     }
 
     /**
      * Store a newly created resource in storage.
+     * Khusus admin.
      */
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
@@ -59,6 +71,7 @@ class ProductController extends Controller
 
     /**
      * Display the specified resource.
+     * Bebas diakses siapa saja.
      */
     public function show(string $id)
     {
@@ -69,9 +82,14 @@ class ProductController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * Khusus admin.
      */
     public function edit(string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $product = Product::findOrFail($id);
 
         return view('products.edit', compact('product'));
@@ -79,9 +97,14 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * Khusus admin.
      */
     public function update(Request $request, string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $product = Product::findOrFail($id);
 
         $request->validate([
@@ -112,9 +135,14 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * Khusus admin.
      */
     public function destroy(string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $product = Product::findOrFail($id);
 
         $product->delete();

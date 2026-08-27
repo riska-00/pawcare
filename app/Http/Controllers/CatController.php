@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Cat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CatController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Bebas diakses siapa saja.
      */
     public function index()
     {
@@ -19,17 +21,27 @@ class CatController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * Khusus admin.
      */
     public function create()
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         return view('cats.create');
     }
 
     /**
      * Store a newly created resource in storage.
+     * Khusus admin.
      */
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'breed' => 'required|string|max:255',
@@ -61,6 +73,7 @@ class CatController extends Controller
 
     /**
      * Display the specified resource.
+     * Bebas diakses siapa saja.
      */
     public function show(string $id)
     {
@@ -71,9 +84,14 @@ class CatController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * Khusus admin.
      */
     public function edit(string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $cat = Cat::findOrFail($id);
 
         return view('cats.edit', compact('cat'));
@@ -81,9 +99,14 @@ class CatController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * Khusus admin.
      */
     public function update(Request $request, string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $cat = Cat::findOrFail($id);
 
          $request->validate([
@@ -118,9 +141,14 @@ class CatController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * Khusus admin.
      */
     public function destroy(string $id)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
         $cat = Cat::findOrFail($id);
 
         $cat->delete();
