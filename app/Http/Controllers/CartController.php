@@ -26,24 +26,16 @@ class CartController extends Controller
         $product = Product::findOrFail($request->product_id);
 
         if ($product->stock < $request->quantity) {
-            return back()->with(
-                'error',
-                'Jumlah produk melebihi stok yang tersedia.'
-            );
+            return back()->with('error', 'Jumlah produk melebihi stok yang tersedia.');
         }
 
-        $cart = Cart::where('user_id', Auth::id())
-            ->where('product_id', $product->id)
-            ->first();
+        $cart = Cart::where('user_id', Auth::id())->where('product_id', $product->id)->first();
 
         if ($cart) {
             $newQuantity = $cart->quantity + $request->quantity;
 
             if ($newQuantity > $product->stock) {
-                return back()->with(
-                    'error',
-                    'Jumlah produk di keranjang melebihi stok yang tersedia.'
-                );
+                return back()->with('error', 'Jumlah produk di keranjang melebihi stok yang tersedia.');
             }
 
             $cart->update([
@@ -57,9 +49,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()
-            ->route('carts.index')
-            ->with('success', 'Produk berhasil ditambahkan ke keranjang.');
+        return redirect()->route('carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
     }
 
     public function update(Request $request, string $id)
