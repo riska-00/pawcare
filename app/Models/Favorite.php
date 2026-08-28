@@ -8,8 +8,8 @@ class Favorite extends Model
 {
     protected $fillable = [
         'user_id',
-        'cat_id',
-        'product_id'
+        'favoritable_id',
+        'favoritable_type',
     ];
 
     public function user()
@@ -17,13 +17,17 @@ class Favorite extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function cat()
+    
+    public function getFavoritableAttribute()
     {
-        return $this->belongsTo(Cat::class, 'cat_id');
-    }
+        if ($this->favoritable_type === 'cat') {
+            return Cat::find($this->favoritable_id);
+        }
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');
+        if ($this->favoritable_type === 'product') {
+            return Product::find($this->favoritable_id);
+        }
+
+        return null;
     }
 }

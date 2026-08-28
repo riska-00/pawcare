@@ -19,6 +19,11 @@ class CatReservation extends Model
         return ['visit_date' => 'date'];
     }
 
+    public function getKodeReservasiAttribute()
+    {
+        return 'RES' . $this->created_at->format('dmy') . '-' . str_pad($this->id, 3, '0', STR_PAD_LEFT);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -28,5 +33,5 @@ class CatReservation extends Model
     {
         return $this->belongsTo(Cat::class, 'cat_id');
     }
-    
+
 }

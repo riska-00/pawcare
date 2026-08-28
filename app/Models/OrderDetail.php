@@ -11,11 +11,15 @@ class OrderDetail extends Model
         'product_id',
         'quantity',
         'price',
+        'subtotal',
     ];
 
     protected function casts(): array
     {
-        return ['price' => 'decimal:2'];
+        return [
+            'price' => 'decimal:2',
+            'subtotal' => 'decimal:2',
+        ];
     }
 
     public function order()

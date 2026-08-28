@@ -55,7 +55,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            $totalAmount = 0;
+            $totalPrice = 0;
 
             foreach ($carts as $cart) {
                 if ($cart->quantity > $cart->product->stock) {
@@ -67,13 +67,13 @@ class OrderController extends Controller
                     );
                 }
 
-                $totalAmount += $cart->product->price * $cart->quantity;
+                $totalPrice += $cart->product->price * $cart->quantity;
             }
 
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'shipping_address' => $request->shipping_address,
-                'total_amount' => $totalAmount,
+                'total_price' => $totalPrice,
                 'payment_method' => 'cod',
                 'status' => 'pending',
             ]);
@@ -84,6 +84,7 @@ class OrderController extends Controller
                     'product_id' => $cart->product->id,
                     'quantity' => $cart->quantity,
                     'price' => $cart->product->price,
+                    'subtotal' => $cart->product->price * $cart->quantity,
                 ]);
 
                 $cart->product->decrement(
@@ -94,7 +95,7 @@ class OrderController extends Controller
 
             Payment::create([
                 'order_id' => $order->id,
-                'amount' => $totalAmount,
+                'amount' => $totalPrice,
                 'status' => 'pending',
             ]);
 

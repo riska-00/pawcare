@@ -19,7 +19,7 @@ class Product extends Model
     {
         return ['price' => 'decimal:2'];
     }
-    
+
      public function carts()
     {
         return $this->hasMany(Cart::class, 'product_id');
@@ -32,7 +32,7 @@ class Product extends Model
 
     public function favorites()
     {
-        return $this->hasMany(Favorite::class, 'product_id');
+        return $this->hasMany(Favorite::class, 'favoritable_id')->where('favoritable_type', 'product');
     }
-    
+
 }

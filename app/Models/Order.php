@@ -9,14 +9,19 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'shipping_address',
-        'total_amount',
+        'total_price',
         'payment_method',
         'status',
     ];
 
     protected function casts(): array
     {
-        return ['total_amount' => 'decimal:2'];
+        return ['total_price' => 'decimal:2'];
+    }
+
+    public function getKodePesananAttribute()
+    {
+        return 'PC' . $this->created_at->format('dmy') . '-' . str_pad($this->id, 3, '0', STR_PAD_LEFT);
     }
 
     public function user()

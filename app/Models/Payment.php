@@ -10,6 +10,7 @@ class Payment extends Model
         'order_id',
         'amount',
         'status',
+        'confirmed_by',
         'paid_at',
     ];
 
@@ -24,5 +25,10 @@ class Payment extends Model
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function confirmedBy()
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
     }
 }
