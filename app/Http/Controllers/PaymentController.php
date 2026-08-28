@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    /**
-     * Menampilkan daftar payment.
-     * Admin melihat semua, user hanya melihat payment miliknya sendiri.
-     */
     public function index()
     {
         if (Auth::user()->role === 'admin') {
@@ -27,11 +23,7 @@ class PaymentController extends Controller
 
         return view('payments.index', compact('payments'));
     }
-
-    /**
-     * Menampilkan detail satu payment.
-     * Admin bebas akses semua, user hanya boleh akses payment miliknya sendiri.
-     */
+    
     public function show(string $id)
     {
         $payment = Payment::with('order')->findOrFail($id);
@@ -43,12 +35,6 @@ class PaymentController extends Controller
         return view('payments.show', compact('payment'));
     }
 
-    /**
-     * Mengubah status payment. Khusus admin.
-     * Perubahan status payment ikut menyinkronkan status order,
-     * karena PawCare hanya menggunakan metode COD (bayar & terima
-     * barang terjadi dalam satu waktu kunjungan kurir).
-     */
     public function update(Request $request, string $id)
     {
         if (Auth::user()->role !== 'admin') {

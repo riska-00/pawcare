@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * Bebas diakses siapa saja.
-     */
+    
     public function index()
     {
         $cats = Cat::all();
@@ -32,10 +29,6 @@ class CatController extends Controller
         return view('cats.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * Khusus admin.
-     */
     public function store(Request $request)
     {
         if (Auth::user()->role !== 'admin') {

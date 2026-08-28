@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * Bebas diakses siapa saja.
-     */
     public function index()
     {
         $products = Product::all();
@@ -19,10 +15,6 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * Khusus admin.
-     */
     public function create()
     {
         if (Auth::user()->role !== 'admin') {
@@ -32,10 +24,6 @@ class ProductController extends Controller
         return view('products.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * Khusus admin.
-     */
     public function store(Request $request)
     {
         if (Auth::user()->role !== 'admin') {
@@ -69,10 +57,6 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Data produk berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     * Bebas diakses siapa saja.
-     */
     public function show(string $id)
     {
         $product = Product::findOrFail($id);
@@ -80,10 +64,6 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * Khusus admin.
-     */
     public function edit(string $id)
     {
         if (Auth::user()->role !== 'admin') {
@@ -95,10 +75,6 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     * Khusus admin.
-     */
     public function update(Request $request, string $id)
     {
         if (Auth::user()->role !== 'admin') {
@@ -133,10 +109,6 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Data produk berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * Khusus admin.
-     */
     public function destroy(string $id)
     {
         if (Auth::user()->role !== 'admin') {

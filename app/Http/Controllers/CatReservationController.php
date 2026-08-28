@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CatReservationController extends Controller
 {
-    /**
-     * Menampilkan riwayat reservasi milik user
-     * atau seluruh reservasi untuk admin.
-     */
     public function index()
     {
         if (Auth::user()->role === 'admin') {
@@ -26,9 +22,6 @@ class CatReservationController extends Controller
         return view('cat_reservations.index', compact('catReservations'));
     }
 
-    /**
-     * Menampilkan form reservasi kucing.
-     */
     public function create(Request $request)
     {
         $cat = Cat::findOrFail($request->cat_id);
@@ -36,9 +29,6 @@ class CatReservationController extends Controller
         return view('cat_reservations.create', compact('cat'));
     }
 
-    /**
-     * Menyimpan reservasi baru.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -70,11 +60,7 @@ class CatReservationController extends Controller
             ->with('success', 'Reservasi kucing berhasil dibuat.');
     }
 
-    /**
-     * Menampilkan bukti/detail reservasi.
-     * Bisa diakses oleh admin (siapa saja) atau pemilik reservasi itu sendiri.
-     */
-    public function show(string $id)
+        public function show(string $id)
     {
         $catReservation = CatReservation::with('cat', 'user')
             ->findOrFail($id);
@@ -86,11 +72,7 @@ class CatReservationController extends Controller
         return view('cat_reservations.show', compact('catReservation'));
     }
 
-    /**
-     * Mengubah status reservasi oleh admin.
-     * Hanya admin yang boleh mengubah status reservasi.
-     */
-    public function update(Request $request, string $id)
+        public function update(Request $request, string $id)
     {
         if (Auth::user()->role !== 'admin') {
             abort(403);

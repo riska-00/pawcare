@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    /**
-     * Menampilkan daftar wishlist milik user yang sedang login.
-     * Data cat/product diambil lewat accessor getFavoritableAttribute()
-     * di model Favorite, bukan eager load relasi biasa.
-     */
     public function index()
     {
         $favorites = Favorite::where('user_id', Auth::id())
@@ -22,10 +17,6 @@ class FavoriteController extends Controller
         return view('favorites.index', compact('favorites'));
     }
 
-    /**
-     * Menambahkan kucing atau produk ke wishlist.
-     * favoritable_type harus 'cat' atau 'product'.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -44,9 +35,6 @@ class FavoriteController extends Controller
             ->with('success', 'Berhasil ditambahkan ke wishlist.');
     }
 
-    /**
-     * Menghapus item dari wishlist.
-     */
     public function destroy(string $id)
     {
         $favorite = Favorite::where('user_id', Auth::id())

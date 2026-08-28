@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    /**
-     * Menampilkan form edit profil milik user yang sedang login.
-     */
     public function edit()
     {
         $user = Auth::user();
@@ -31,7 +28,7 @@ class ProfileController extends Controller
             'password_lama' => 'nullable|required_with:password_baru',
             'password_baru' => 'nullable|min:8|confirmed',
         ]);
-        
+
         if ($request->filled('password_baru')) {
             if (!Hash::check($request->password_lama, $user->password)) {
                 return back()
