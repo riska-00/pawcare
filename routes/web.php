@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CatController;
@@ -25,11 +26,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// Admin
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+});
+
 // CAT
 Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
 Route::get('/cats/{cat}', [CatController::class, 'show'])->name('cats.show');
 
-Route::middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/cats/create', [CatController::class, 'create'])->name('cats.create');
     Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
     Route::get('/cats/{cat}/edit', [CatController::class, 'edit'])->name('cats.edit');
@@ -41,7 +47,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-Route::middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -50,10 +56,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // CAT RESERVATION
+//Route untuk user
 Route::middleware('auth')->group(function () {
     Route::get('/cat_reservations', [CatReservationController::class, 'index'])->name('cat_reservations.index');
     Route::get('/cat_reservations/create', [CatReservationController::class, 'create'])->name('cat_reservations.create');
     Route::post('/cat_reservations', [CatReservationController::class, 'store'])->name('cat_reservations.store');
+    Route::get('/cat_reservations/{id}', [CatReservationController::class, 'show'])->name('cat_reservations.show');
+});
+
+//Route admin
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::get('/cat_reservations', [CatReservationController::class, 'index'])->name('cat_reservations.index');
     Route::get('/cat_reservations/{id}', [CatReservationController::class, 'show'])->name('cat_reservations.show');
     Route::put('/cat_reservations/{id}', [CatReservationController::class, 'update'])->name('cat_reservations.update');
 });
@@ -67,6 +80,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // ORDER
+//Route untuk user
 Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
@@ -74,15 +88,35 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 });
 
+//Route untuk admin
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () { 
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+});
+
 // PAYMENT
+//Route untuk user
 Route::middleware('auth')->group(function () {
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('payments.show');
+});
+
+//Route untuk admin
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () { 
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/payments/{id}', [PaymentController::class, 'show'])->name('payments.show');
     Route::put('/payments/{id}', [PaymentController::class, 'update'])->name('payments.update');
 });
 
 // SHIPMENT
+//Route untuk user
 Route::middleware('auth')->group(function () {
+    Route::get('/shipments', [ShipmentController::class, 'index'])->name('shipments.index');
+    Route::get('/shipments/{id}', [ShipmentController::class, 'show'])->name('shipments.show');
+});
+
+//route untuk admin
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () { 
     Route::get('/shipments', [ShipmentController::class, 'index'])->name('shipments.index');
     Route::get('/shipments/{id}', [ShipmentController::class, 'show'])->name('shipments.show');
     Route::put('/shipments/{id}', [ShipmentController::class, 'update'])->name('shipments.update');

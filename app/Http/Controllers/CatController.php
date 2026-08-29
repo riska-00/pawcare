@@ -9,13 +9,22 @@ use Illuminate\Support\Facades\Auth;
 class CatController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
-        $cats = Cat::all();
+        $query = Cat::query();
 
-        return view('cats.index', compact('cats'));    
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $cats = $query->get();
+
+        return view('cats.index', compact('cats'));
     }
-
     /**
      * Show the form for creating a new resource.
      * Khusus admin.
