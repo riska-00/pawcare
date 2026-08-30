@@ -32,8 +32,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 });
 
 // CAT
+Route::middleware('auth')->group(function () {
 Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
 Route::get('/cats/{cat}', [CatController::class, 'show'])->name('cats.show');
+});
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/cats/create', [CatController::class, 'create'])->name('cats.create');
@@ -44,8 +46,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 });
 
 // PRODUCT
+Route::middleware('auth')->group(function () {
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+});
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');

@@ -21,14 +21,29 @@ class CatController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('breed')) {
+            $query->where('breed', $request->breed);
+        }
+
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
         $cats = $query->get();
 
-        return view('cats.index', compact('cats'));
+        $breeds = Cat::select('breed')->distinct()->pluck('breed');
+
+        return view('cats.index', compact('cats', 'breeds'));
     }
-    /**
-     * Show the form for creating a new resource.
-     * Khusus admin.
-     */
+
     public function create()
     {
         if (Auth::user()->role !== 'admin') {

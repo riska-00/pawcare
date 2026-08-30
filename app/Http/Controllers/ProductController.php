@@ -8,13 +8,32 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $query = Product::query();
 
-        return view('products.index', compact('products'));
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        $products = $query->get();
+
+        $categories = Product::select('category')->distinct()->pluck('category');
+
+        return view('products.index', compact('products', 'categories'));
     }
-
     public function create()
     {
         if (Auth::user()->role !== 'admin') {
