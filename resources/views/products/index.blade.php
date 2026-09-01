@@ -1,6 +1,6 @@
 @extends(Auth::user()->role === 'admin' ? 'layouts.admin' : 'layouts.app')
 
-@section('title', 'Katalog Kucing - PawCare')
+@section('title', 'Katalog Produk - PawCare')
 
 @section('content')
 
@@ -10,22 +10,22 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h3 class="fw-bold mb-0" style="color: #2A324C;">Katalog Kucing</h3>
-            <a href="{{ route('admin.cats.create') }}" class="btn" style="background-color: #128965; color: #fff;">
-                + Tambah Kucing
+            <h3 class="fw-bold mb-0" style="color: #2A324C;">Katalog Produk</h3>
+            <a href="{{ route('admin.products.create') }}" class="btn" style="background-color: #128965; color: #fff;">
+                + Tambah Produk
             </a>
         </div>
 
-        <form method="GET" action="{{ route('cats.index') }}" class="row g-2 mb-3">
+        <form method="GET" action="{{ route('products.index') }}" class="row g-2 mb-3">
             <div class="col-md-6">
-                <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama kucing...">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama produk...">
             </div>
             <div class="col-md-4">
-                <select name="status" class="form-select">
-                    <option value="">Semua Status</option>
-                    <option value="available" {{ request('status') === 'available' ? 'selected' : '' }}>Available</option>
-                    <option value="reserved" {{ request('status') === 'reserved' ? 'selected' : '' }}>Reserved</option>
-                    <option value="sold" {{ request('status') === 'sold' ? 'selected' : '' }}>Sold</option>
+                <select name="category" class="form-select">
+                    <option value="">Semua Kategori</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-2">
@@ -35,7 +35,7 @@
 
         <div class="card shadow-sm border-0">
             <div class="card-header py-3" style="background-color: #FFEBA6;">
-                <h6 class="m-0 fw-bold" style="color: #2A324C;">Data Kucing</h6>
+                <h6 class="m-0 fw-bold" style="color: #2A324C;">Data Produk</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -45,47 +45,37 @@
                                 <th width="5%">No</th>
                                 <th>Foto</th>
                                 <th>Nama</th>
-                                <th>Ras</th>
-                                <th>Usia</th>
-                                <th>JK</th>
+                                <th>Kategori</th>
                                 <th>Harga</th>
-                                <th>Status</th>
+                                <th>Stok</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($cats as $cat)
+                            @foreach ($products as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        @if ($cat->photo)
-                                            <img src="{{ asset('storage/' . $cat->photo) }}" alt="{{ $cat->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        @if ($product->photo)
+                                            <img src="{{ asset('storage/' . $product->photo) }}" alt="{{ $product->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
                                         @else
                                             <div class="d-flex align-items-center justify-content-center bg-light text-muted" style="width: 50px; height: 50px; border-radius: 8px; font-size: 0.7rem;">
                                                 No Photo
                                             </div>
                                         @endif
                                     </td>
-                                    <td>{{ $cat->name }}</td>
-                                    <td>{{ $cat->breed }}</td>
-                                    <td>{{ $cat->age }}</td>
-                                    <td>{{ $cat->gender === 'jantan' ? 'Jantan' : 'Betina' }}</td>
-                                    <td>Rp {{ number_format($cat->price, 0, ',', '.') }}</td>
-                                    <td>
-                                        <span class="badge" style="background-color:
-                                            {{ $cat->status === 'available' ? '#128965' : ($cat->status === 'reserved' ? '#FFD85C' : '#EC5D5D') }};
-                                            color: {{ $cat->status === 'reserved' ? '#2A324C' : '#FFFFFF' }};">
-                                            {{ ucfirst($cat->status) }}
-                                        </span>
-                                    </td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->category }}</td>
+                                    <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                    <td>{{ $product->stock }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('cats.show', $cat->id) }}" class="btn btn-link text-secondary p-0 mx-2" title="Detail">
+                                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-link text-secondary p-0 mx-2" title="Detail">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.cats.edit', $cat->id) }}" class="btn btn-link p-0 mx-2" title="Edit" style="color: #128965;">
+                                        <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-link p-0 mx-2" title="Edit" style="color: #128965;">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <a href="#" onclick="handleDestroy('{{ route('admin.cats.destroy', $cat->id) }}')"
+                                        <a href="#" onclick="handleDestroy('{{ route('admin.products.destroy', $product->id) }}')"
                                             class="btn btn-link text-danger p-0 mx-2" title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </a>
@@ -129,9 +119,9 @@
     {{-- ================= TAMPILAN USER ================= --}}
     <div class="container py-4">
 
-        <form method="GET" action="{{ route('cats.index') }}" class="mb-4">
+        <form method="GET" action="{{ route('products.index') }}" class="mb-4">
             <input type="text" name="search" value="{{ request('search') }}"
-                class="form-control form-control-lg" placeholder="Cari kucing...">
+                class="form-control form-control-lg" placeholder="Cari produk...">
         </form>
 
         <div class="row">
@@ -139,25 +129,16 @@
                 <div class="card border-0 shadow-sm p-3">
                     <h6 class="fw-bold mb-3">Filter</h6>
 
-                    <form method="GET" action="{{ route('cats.index') }}">
+                    <form method="GET" action="{{ route('products.index') }}">
                         <input type="hidden" name="search" value="{{ request('search') }}">
 
                         <div class="mb-3">
-                            <label class="form-label small">Ras</label>
-                            <select name="breed" class="form-select form-select-sm">
-                                <option value="">Semua Ras</option>
-                                @foreach ($breeds as $breed)
-                                    <option value="{{ $breed }}" {{ request('breed') === $breed ? 'selected' : '' }}>{{ $breed }}</option>
+                            <label class="form-label small">Kategori</label>
+                            <select name="category" class="form-select form-select-sm">
+                                <option value="">Semua Kategori</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
                                 @endforeach
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small">Jenis Kelamin</label>
-                            <select name="gender" class="form-select form-select-sm">
-                                <option value="">Semua</option>
-                                <option value="jantan" {{ request('gender') === 'jantan' ? 'selected' : '' }}>Jantan</option>
-                                <option value="betina" {{ request('gender') === 'betina' ? 'selected' : '' }}>Betina</option>
                             </select>
                         </div>
 
@@ -168,7 +149,7 @@
 
                         <div class="mb-3">
                             <label class="form-label small">Harga Max</label>
-                            <input type="number" name="max_price" value="{{ request('max_price') }}" class="form-control form-control-sm" placeholder="Rp 10.000.000">
+                            <input type="number" name="max_price" value="{{ request('max_price') }}" class="form-control form-control-sm" placeholder="Rp 500.000">
                         </div>
 
                         <button type="submit" class="btn w-100" style="background-color: #128965; color: #fff;">Terapkan</button>
@@ -178,33 +159,35 @@
 
             <div class="col-md-9">
                 <div class="row g-3">
-                    @forelse ($cats as $cat)
+                    @forelse ($products as $product)
                         <div class="col-md-4 col-6">
                             <div class="card h-100 border-0 shadow-sm">
-                                @if ($cat->photo)
-                                    <img src="{{ asset('storage/' . $cat->photo) }}" class="card-img-top" alt="{{ $cat->name }}" style="height: 180px; object-fit: cover;">
+                                @if ($product->photo)
+                                    <img src="{{ asset('storage/' . $product->photo) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 180px; object-fit: cover;">
                                 @else
                                     <div class="d-flex align-items-center justify-content-center bg-light" style="height: 180px;">
                                         <span class="text-muted small">Tidak ada foto</span>
                                     </div>
                                 @endif
                                 <div class="card-body">
-                                    <span class="badge mb-2" style="background-color: {{ $cat->status === 'available' ? '#128965' : '#EC5D5D' }};">
-                                        {{ ucfirst($cat->status) }}
-                                    </span>
-                                    <h6 class="fw-bold">{{ $cat->name }}</h6>
-                                    <p class="small text-muted mb-2">{{ $cat->breed }} &bull; Rp {{ number_format($cat->price, 0, ',', '.') }}</p>
+                                    <h6 class="fw-bold">{{ $product->name }}</h6>
+                                    <p class="small text-muted mb-2">{{ $product->category }} &bull; Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                                     <div class="d-flex gap-2">
-                                        <a href="{{ route('cats.show', $cat->id) }}" class="btn btn-sm btn-outline-secondary flex-fill">Detail</a>
-                                        @if ($cat->status === 'available')
-                                            <a href="{{ route('cat_reservations.create', $cat->id) }}" class="btn btn-sm flex-fill" style="background-color: #128965; color: #fff;">Reservasi</a>
+                                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm btn-outline-secondary flex-fill">Detail</a>
+                                        @if ($product->stock > 0)
+                                            <form action="{{ route('carts.store') }}" method="POST" class="flex-fill">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" class="btn btn-sm w-100" style="background-color: #128965; color: #fff;">+Keranjang</button>
+                                            </form>
                                         @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <p class="text-muted">Belum ada kucing yang tersedia.</p>
+                        <p class="text-muted">Belum ada produk yang tersedia.</p>
                     @endforelse
                 </div>
             </div>

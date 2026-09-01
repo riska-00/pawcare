@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cat;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -18,11 +20,12 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('home');
+        $cats = Cat::where('status', 'available')->latest()->take(4)->get();
+        $products = Product::latest()->take(4)->get();
+
+        return view('home', compact('cats', 'products'));
     }
 }

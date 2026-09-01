@@ -3,81 +3,177 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'PawCare') }}</title>
+    <title>@yield('title', config('app.name', 'PawCare'))</title>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #FFFAE8;
+        }
+
+        .navbar {
+            background-color: #FFD85C !important;
+        }
+
+        .navbar-brand {
+            color: #128965 !important;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            color: #2A324C !important;
+        }
+
+        .nav-link.active {
+            color: #128965 !important;
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            color: #128965 !important;
+        }
+
+        .btn-pawcare {
+            background-color: #128965;
+            color: #FFFFFF;
+        }
+
+        .btn-pawcare:hover {
+            background-color: #0e6e51;
+            color: #FFFFFF;
+        }
+    </style>
+
+    @yield('styles')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md shadow-sm py-3">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'PawCare') }}
+                <a class="navbar-brand d-flex align-items-center fs-4" href="{{ route('home') }}">
+                    <img src="{{ asset('image/logo.png') }}" alt="PawCare" style="width: 40px; height: 40px;" class="me-2">
+                    PawCare
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
+                    <ul class="navbar-nav mx-auto gap-4">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('cats.*') ? 'active' : '' }}" href="{{ route('cats.index') }}">Kucing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">Produk</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('favorites.*') ? 'active' : '' }}" href="{{ route('favorites.index') }}">Wishlist</a>
+                        </li>
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item me-3">
+                            <a class="nav-link position-relative" href="{{ route('carts.index') }}">
+                                <i class="bi bi-cart3" style="font-size: 1.3rem; color: #2A324C;"></i>
+                                @php $cartCount = \App\Models\Cart::where('user_id', Auth::id())->count(); @endphp
+                                @if ($cartCount > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #128965; font-size: 0.65rem;">
+                                        {{ $cartCount }}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="d-flex align-items-center justify-content-center me-2"
+                                    style="width: 32px; height: 32px; border-radius: 50%; background-color: #FFEBA6; color: #2A324C; font-weight: 700; font-size: 0.9rem;">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </div>
+                                <span style="color: #2A324C;">{{ Auth::user()->name }}</span>
+                            </a>
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ Auth::user()->name }}
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">Pesanan Saya</a>
+                                <a class="dropdown-item" href="{{ route('cat_reservations.index') }}">Reservasi Saya</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main>
+            @if (session('success'))
+                <div class="container mt-3">
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="container mt-3">
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                </div>
+            @endif
+
             @yield('content')
         </main>
+
+        <footer class="mt-5 pt-4 pb-2" style="background-color: #FFFFFF; border-top: 1px solid #DCD3B2;">
+    <div class="container">
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <h6 class="fw-bold mb-2" style="color: #128965;">🐾 PawCare</h6>
+                <p class="small text-muted mb-0">Tempat terbaik untuk menemukan kucing berkualitas dan produk terbaik untuk sahabat berbulu Anda.</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h6 class="fw-bold mb-3" style="color: #2A324C;">Navigasi</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-1"><a href="{{ route('home') }}" class="text-decoration-none text-muted">Beranda</a></li>
+                    <li class="mb-1"><a href="{{ route('cats.index') }}" class="text-decoration-none text-muted">Kucing</a></li>
+                    <li class="mb-1"><a href="{{ route('products.index') }}" class="text-decoration-none text-muted">Produk</a></li>
+                    <li class="mb-1"><a href="{{ route('favorites.index') }}" class="text-decoration-none text-muted">Wishlist</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-6">
+                <h6 class="fw-bold mb-3" style="color: #2A324C;">Akun Saya</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-1"><a href="{{ route('profile.edit') }}" class="text-decoration-none text-muted">Profil</a></li>
+                    <li class="mb-1"><a href="{{ route('orders.index') }}" class="text-decoration-none text-muted">Pesanan Saya</a></li>
+                    <li class="mb-1"><a href="{{ route('cat_reservations.index') }}" class="text-decoration-none text-muted">Reservasi Saya</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <h6 class="fw-bold mb-3" style="color: #2A324C;">Kontak Kami</h6>
+                <p class="small text-muted mb-1"><i class="bi bi-envelope"></i> pawcare.support@gmail.com</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <p class="small text-muted text-center mb-0">&copy; {{ date('Y') }} PawCare. All rights reserved.</p>
+    </div>
+</footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
+    @stack('scripts')
 </body>
 </html>

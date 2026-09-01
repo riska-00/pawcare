@@ -74,7 +74,7 @@
                         <a href="{{ route('cats.index') }}" class="btn btn-outline-secondary">Kembali</a>
                     @else
                         @if ($cat->status === 'available')
-                            <a href="{{ route('cat_reservations.create', $cat->id) }}" class="btn flex-fill" style="background-color: #128965; color: #fff;">
+                            <a href="{{ route('cat_reservations.create', ['cat_id' => $cat->id]) }}" class="btn flex-fill" style="background-color: #128965; color: #fff;">
                                 Reservasi
                             </a>
                         @endif
