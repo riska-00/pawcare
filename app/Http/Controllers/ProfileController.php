@@ -13,7 +13,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        return view('profile.edit', compact('user'));
+        return view('pages.profile.edit', compact('user'));
     }
     public function update(Request $request)
     {
@@ -50,8 +50,6 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        return redirect()
-            ->route('profile.edit')
-            ->with('success', 'Profil berhasil diperbarui.');
+        return redirect()->route('profile.edit')->with('success', 'Profil berhasil diperbarui.');
     }
 }

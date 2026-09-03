@@ -21,7 +21,7 @@ class PaymentController extends Controller
                 ->get();
         }
 
-        return view('payments.index', compact('payments'));
+        return view('pages.payments.index', compact('payments'));
     }
     
     public function show(string $id)
@@ -32,7 +32,7 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        return view('payments.show', compact('payment'));
+        return view('pages.payments.show', compact('payment'));
     }
 
     public function update(Request $request, string $id)
@@ -59,8 +59,6 @@ class PaymentController extends Controller
             $payment->order->update(['status' => 'cancelled']);
         }
 
-        return redirect()
-            ->route('payments.index')
-            ->with('success', 'Status pembayaran berhasil diperbarui.');
+        return redirect()->route('payments.index')->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 }

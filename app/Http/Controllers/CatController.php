@@ -41,7 +41,7 @@ class CatController extends Controller
 
         $breeds = Cat::select('breed')->distinct()->pluck('breed');
 
-        return view('cats.index', compact('cats', 'breeds'));
+        return view('pages.cats.index', compact('cats', 'breeds'));
     }
 
     public function create()
@@ -50,7 +50,7 @@ class CatController extends Controller
             abort(403);
         }
 
-        return view('cats.create');
+        return view('pages.cats.create');
     }
 
     public function store(Request $request)
@@ -96,7 +96,7 @@ class CatController extends Controller
     {
         $cat = Cat::findOrFail($id);
 
-        return view('cats.show', compact('cat'));
+        return view('pages.cats.show', compact('cat'));
     }
 
     /**
@@ -111,7 +111,7 @@ class CatController extends Controller
 
         $cat = Cat::findOrFail($id);
 
-        return view('cats.edit', compact('cat'));
+        return view('pages.cats.edit', compact('cat'));
     }
 
     /**

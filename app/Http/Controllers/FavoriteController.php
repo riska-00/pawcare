@@ -10,11 +10,9 @@ class FavoriteController extends Controller
 {
     public function index()
     {
-        $favorites = Favorite::where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $favorites = Favorite::where('user_id', Auth::id())->latest()->get();
 
-        return view('favorites.index', compact('favorites'));
+        return view('pages.favorites.index', compact('favorites'));
     }
 
     public function store(Request $request)
@@ -32,9 +30,7 @@ class FavoriteController extends Controller
 
         $message = $favorite->wasRecentlyCreated ? 'Berhasil ditambahkan ke Wishlist.' : 'Item ini sudah ada di Wishlist anda.';
 
-        return redirect()
-            ->route('favorites.index')
-            ->with('success', 'Berhasil ditambahkan ke wishlist.');
+        return redirect()->route('favorites.index')->with('success', 'Berhasil ditambahkan ke wishlist.');
     }
 
     public function destroy(string $id)
@@ -44,8 +40,6 @@ class FavoriteController extends Controller
 
         $favorite->delete();
 
-        return redirect()
-            ->route('favorites.index')
-            ->with('success', 'Berhasil dihapus dari wishlist.');
+        return redirect()->route('favorites.index')->with('success', 'Berhasil dihapus dari wishlist.');
     }
 }

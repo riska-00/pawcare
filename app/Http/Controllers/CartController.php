@@ -51,7 +51,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('pages.carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
+        return redirect()->route('carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
         });
     }
 
@@ -75,9 +75,7 @@ class CartController extends Controller
             'quantity' => $request->quantity,
         ]);
 
-        return redirect()
-            ->route('pages.carts.index')
-            ->with('success', 'Jumlah produk berhasil diperbarui.');
+        return redirect()->route('carts.index')->with('success', 'Jumlah produk berhasil diperbarui.');
     }
 
     public function destroy(string $id)
@@ -87,8 +85,6 @@ class CartController extends Controller
 
         $cart->delete();
 
-        return redirect()
-            ->route('pages.carts.index')
-            ->with('success', 'Produk berhasil dihapus dari keranjang.');
+        return redirect()->route('carts.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
 }

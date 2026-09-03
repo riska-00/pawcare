@@ -19,7 +19,7 @@ class CatReservationController extends Controller
                 ->get();
         }
 
-        return view('cat_reservations.index', compact('catReservations'));
+        return view('pages.cat_reservations.index', compact('catReservations'));
     }
 
     public function create(Request $request)
@@ -30,7 +30,7 @@ class CatReservationController extends Controller
             return redirect()->route('cats.show', $cat->id)->with('error', 'Kucing ini sudah tidak tersedia untuk reservasi');
         }
 
-        return view('cat_reservations.create', compact('cat'));
+        return view('pages.cat_reservations.create', compact('cat'));
     }
 
     public function store(Request $request)
@@ -59,9 +59,7 @@ class CatReservationController extends Controller
             'status' => 'reserved',
         ]);
 
-        return redirect()
-            ->route('cat_reservations.show', $catReservation->id)
-            ->with('success', 'Reservasi kucing berhasil dibuat.');
+        return redirect()->route('cat_reservations.show', $catReservation->id)->with('success', 'Reservasi kucing berhasil dibuat.');
     }
 
         public function show(string $id)
@@ -73,7 +71,7 @@ class CatReservationController extends Controller
             abort(403);
         }
 
-        return view('cat_reservations.show', compact('catReservation'));
+        return view('pages.cat_reservations.show', compact('catReservation'));
     }
 
         public function update(Request $request, string $id)
@@ -107,8 +105,6 @@ class CatReservationController extends Controller
             ]);
         }
 
-        return redirect()
-            ->route('cat_reservations.index')
-            ->with('success', 'Status reservasi berhasil diperbarui.');
+        return redirect()->route('cat_reservations.index')->with('success', 'Status reservasi berhasil diperbarui.');
     }
 }

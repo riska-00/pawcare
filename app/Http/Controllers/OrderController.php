@@ -23,7 +23,7 @@ class OrderController extends Controller
             ->where('user_id', Auth::id())->latest()->get();
         }
 
-        return view('orders.index', compact('orders'));
+        return view('pages.orders.index', compact('orders'));
     }
 
     public function create()
@@ -34,7 +34,7 @@ class OrderController extends Controller
             return redirect()->route('carts.index')->with('error', 'Keranjang masih kosong');
         }
 
-        return view('orders.create', compact('carts'));
+        return view('pages.orders.create', compact('carts'));
     }
 
     public function store(Request $request)
@@ -48,9 +48,7 @@ class OrderController extends Controller
             ->get();
 
         if ($carts->isEmpty()) {
-            return redirect()
-                ->route('carts.index')
-                ->with('error', 'Keranjang masih kosong.');
+            return redirect()->route('carts.index')->with('error', 'Keranjang masih kosong.');
         }
 
         DB::beginTransaction();
@@ -112,9 +110,7 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return redirect()
-                ->route('orders.show', $order->id)
-                ->with('success', 'Pesanan berhasil dibuat.');
+            return redirect()->route('orders.show', $order->id)->with('success', 'Pesanan berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -144,7 +140,7 @@ class OrderController extends Controller
                 ->findOrFail($id);
         }
 
-        return view('orders.show', compact('order'));
+        return view('pages.orders.show', compact('order'));
     }
 
 }

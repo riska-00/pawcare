@@ -32,7 +32,7 @@ class ProductController extends Controller
 
         $categories = Product::select('category')->distinct()->pluck('category');
 
-        return view('products.index', compact('products', 'categories'));
+        return view('pages.products.index', compact('products', 'categories'));
     }
     public function create()
     {
@@ -40,7 +40,7 @@ class ProductController extends Controller
             abort(403);
         }
 
-        return view('products.create');
+        return view('pages.products.create');
     }
 
     public function store(Request $request)
@@ -80,7 +80,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('products.show', compact('product'));
+        return view('pages.products.show', compact('product'));
     }
 
     public function edit(string $id)
@@ -91,7 +91,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        return view('products.edit', compact('product'));
+        return view('pages.products.edit', compact('product'));
     }
 
     public function update(Request $request, string $id)

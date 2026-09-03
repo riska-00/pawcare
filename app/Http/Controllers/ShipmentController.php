@@ -21,7 +21,7 @@ class ShipmentController extends Controller
                 ->get();
         }
 
-        return view('shipments.index', compact('shipments'));
+        return view('pages.shipments.index', compact('shipments'));
     }
 
     public function show(string $id)
@@ -32,7 +32,7 @@ class ShipmentController extends Controller
             abort(403);
         }
 
-        return view('shipments.show', compact('shipment'));
+        return view('pages.shipments.show', compact('shipment'));
     }
 
     public function update(Request $request, string $id)
@@ -65,8 +65,6 @@ class ShipmentController extends Controller
 
         $shipment->update($data);
 
-        return redirect()
-            ->route('shipments.index')
-            ->with('success', 'Status pengiriman berhasil diperbarui.');
+        return redirect()->route('shipments.index')->with('success', 'Status pengiriman berhasil diperbarui.');
     }
 }
