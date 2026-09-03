@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -13,7 +14,7 @@ class CartController extends Controller
     {
         $carts = Cart::with('product')->where('user_id', Auth::id())->get();
 
-        return view('carts.index', compact('carts'));
+        return view('pages.carts.index', compact('carts'));
     }
 
     public function store(Request $request)
@@ -23,7 +24,8 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $product = Product::findOrFail($request->product_id);
+        return DB::transaction(function() use($request) {
+            $product = Product::where('id', $request->product_id)->lockForUpdate()->first();
 
         if ($product->stock < $request->quantity) {
             return back()->with('error', 'Jumlah produk melebihi stok yang tersedia.');
@@ -49,7 +51,8 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
+        return redirect()->route('pages.carts.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
+        });
     }
 
     public function update(Request $request, string $id)
@@ -73,7 +76,7 @@ class CartController extends Controller
         ]);
 
         return redirect()
-            ->route('carts.index')
+            ->route('pages.carts.index')
             ->with('success', 'Jumlah produk berhasil diperbarui.');
     }
 
@@ -85,7 +88,7 @@ class CartController extends Controller
         $cart->delete();
 
         return redirect()
-            ->route('carts.index')
+            ->route('pages.carts.index')
             ->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
 }

@@ -12,7 +12,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShipmentController;
-use Pest\Plugins\Profile;
 
 Route::get('/', function () {
     if (Auth::check()) {

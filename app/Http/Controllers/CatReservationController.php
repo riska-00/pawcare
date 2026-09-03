@@ -26,6 +26,10 @@ class CatReservationController extends Controller
     {
         $cat = Cat::findOrFail($request->cat_id);
 
+        if ($cat->status !== 'available') {
+            return redirect()->route('cats.show', $cat->id)->with('error', 'Kucing ini sudah tidak tersedia untuk reservasi');
+        }
+
         return view('cat_reservations.create', compact('cat'));
     }
 
@@ -48,7 +52,7 @@ class CatReservationController extends Controller
             'cat_id' => $cat->id,
             'visit_date' => $request->visit_date,
             'notes' => $request->notes,
-            'status' => 'confirmed',
+            'status' => 'pending',
         ]);
 
         $cat->update([

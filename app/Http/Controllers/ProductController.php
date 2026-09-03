@@ -28,7 +28,7 @@ class ProductController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        $products = $query->get();
+        $products = $query->paginate(8);
 
         $categories = Product::select('category')->distinct()->pluck('category');
 

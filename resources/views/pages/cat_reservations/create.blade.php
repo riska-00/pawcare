@@ -5,6 +5,9 @@
 @section('content')
 
 <div class="container py-4">
+    <a href="{{ route('cats.index') }}" class="btn btn-outline-secondary btn-sm mb-3">
+        <i class="bi bi-arrow-left"></i> Kembali ke Kucing
+    </a>
 
     <nav class="mb-3">
         <a href="{{ route('cats.index') }}" class="text-decoration-none text-muted small">Kucing</a>

@@ -24,11 +24,13 @@ class FavoriteController extends Controller
             'favoritable_type' => 'required|in:cat,product',
         ]);
 
-        Favorite::create([
+        $favorite= Favorite::firstOrCreate([
             'user_id' => Auth::id(),
             'favoritable_id' => $request->favoritable_id,
             'favoritable_type' => $request->favoritable_type,
         ]);
+
+        $message = $favorite->wasRecentlyCreated ? 'Berhasil ditambahkan ke Wishlist.' : 'Item ini sudah ada di Wishlist anda.';
 
         return redirect()
             ->route('favorites.index')

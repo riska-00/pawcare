@@ -9,6 +9,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -46,17 +47,154 @@
             background-color: #0e6e51;
             color: #FFFFFF;
         }
+
+        .pc-card {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #EFE6C0;
+            transition: transform .15s ease, box-shadow .15s ease;
+            background-color: #FFFFFF;
+        }
+
+        .pc-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(42, 50, 76, 0.12);
+        }
+
+        .pc-card .pc-img-wrap {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+            background-color: #FFF3D6;
+        }
+
+        .pc-card .pc-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .25s ease;
+        }
+
+        .pc-card:hover .pc-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .pc-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background-color: #128965;
+            color: #fff;
+        }
+
+        .pc-badge.status-reserved {
+            background-color: #FFD85C;
+            color: #2A324C;
+        }
+
+        .pc-badge.status-sold {
+            background-color: #EC5D5D;
+            color: #fff;
+        }
+
+        .pc-btn-outline {
+            background-color: #fff;
+            color: #128965;
+            border: 1.5px solid #128965;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 7px 0;
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .pc-btn-outline:hover {
+            background-color: #DCF4EA;
+            color: #128965;
+        }
+
+        .pc-filter-card {
+            border-radius: 14px;
+            border: 1px solid #EFE6C0;
+        }
+
+        .pc-body {
+            padding: 14px 16px 16px;
+        }
+
+        .pc-meta {
+            font-size: 0.78rem;
+            color: #707378;
+            margin-bottom: 4px;
+        }
+
+        .pc-name {
+            font-weight: 700;
+            color: #2A324C;
+            margin-bottom: 2px;
+            font-size: 1rem;
+        }
+
+        .pc-price {
+            font-weight: 700;
+            color: #128965;
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+        }
+
+        .pc-btn {
+            background-color: #128965;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 0;
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .pc-fav-form {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0;
+        }
+
+        .pc-fav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #EC5D5D;
+        }
+
+        .pc-btn:hover {
+            background-color: #0e6e51;
+            color: #fff;
+        }
     </style>
 
     @yield('styles')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md shadow-sm py-3">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center fs-4" href="{{ route('home') }}">
-                    <img src="{{ asset('image/logo.png') }}" alt="PawCare" style="width: 40px; height: 40px;" class="me-2">
-                    PawCare
+        <nav class="navbar navbar-expand-md shadow-sm py-2">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center fs-5" href="{{ route('home') }}">
+            <img src="{{ asset('image/logo.png') }}" alt="PawCare" style="width: 30px; height: 30px;" class="me-2">
+            PawCare
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -135,39 +273,11 @@
             @yield('content')
         </main>
 
-        <footer class="mt-5 pt-4 pb-2" style="background-color: #FFFFFF; border-top: 1px solid #DCD3B2;">
-    <div class="container">
-        <div class="row g-3 mb-3">
-            <div class="col-md-4">
-                <h6 class="fw-bold mb-2" style="color: #128965;">🐾 PawCare</h6>
-                <p class="small text-muted mb-0">Tempat terbaik untuk menemukan kucing berkualitas dan produk terbaik untuk sahabat berbulu Anda.</p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h6 class="fw-bold mb-3" style="color: #2A324C;">Navigasi</h6>
-                <ul class="list-unstyled small">
-                    <li class="mb-1"><a href="{{ route('home') }}" class="text-decoration-none text-muted">Beranda</a></li>
-                    <li class="mb-1"><a href="{{ route('cats.index') }}" class="text-decoration-none text-muted">Kucing</a></li>
-                    <li class="mb-1"><a href="{{ route('products.index') }}" class="text-decoration-none text-muted">Produk</a></li>
-                    <li class="mb-1"><a href="{{ route('favorites.index') }}" class="text-decoration-none text-muted">Wishlist</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 col-6">
-                <h6 class="fw-bold mb-3" style="color: #2A324C;">Akun Saya</h6>
-                <ul class="list-unstyled small">
-                    <li class="mb-1"><a href="{{ route('profile.edit') }}" class="text-decoration-none text-muted">Profil</a></li>
-                    <li class="mb-1"><a href="{{ route('orders.index') }}" class="text-decoration-none text-muted">Pesanan Saya</a></li>
-                    <li class="mb-1"><a href="{{ route('cat_reservations.index') }}" class="text-decoration-none text-muted">Reservasi Saya</a></li>
-                </ul>
-            </div>
-            <div class="col-md-2">
-                <h6 class="fw-bold mb-3" style="color: #2A324C;">Kontak Kami</h6>
-                <p class="small text-muted mb-1"><i class="bi bi-envelope"></i> pawcare.support@gmail.com</p>
-            </div>
-        </div>
-
-        <hr>
-
-        <p class="small text-muted text-center mb-0">&copy; {{ date('Y') }} PawCare. All rights reserved.</p>
+        <footer class="mt-5 py-3" style="background-color: #FFFFFF; border-top: 1px solid #DCD3B2;">
+    <div class="container text-center">
+        <p class="mb-1 fw-bold small" style="color: #128965;">🐾 PawCare - Cat Care Center</p>
+        <p class="small text-muted mb-1">Ada kritik, saran, atau pertanyaan? <i class="bi bi-envelope"></i> pawcare.support@gmail.com</p>
+        <p class="small text-muted mb-0">&copy; {{ date('Y') }} PawCare. All rights reserved.</p>
     </div>
 </footer>
     </div>

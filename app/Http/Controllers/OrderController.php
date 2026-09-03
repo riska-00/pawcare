@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,9 @@ class OrderController extends Controller
 
         try {
             $totalPrice = 0;
+
+            $productIds = $carts->pluck('product_id');
+            $lokcedProducts = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
 
             foreach ($carts as $cart) {
                 if ($cart->quantity > $cart->product->stock) {

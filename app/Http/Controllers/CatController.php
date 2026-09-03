@@ -37,7 +37,7 @@ class CatController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        $cats = $query->get();
+        $cats = $query->paginate(8);
 
         $breeds = Cat::select('breed')->distinct()->pluck('breed');
 
