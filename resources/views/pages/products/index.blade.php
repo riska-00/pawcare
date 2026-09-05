@@ -182,6 +182,10 @@
                                                 <button type="submit" class="btn btn-sm w-100" style="background-color: #128965; color: #fff;">+Keranjang</button>
                                             </form>
                                         @endif
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-id="{{ $product->id }}" data-type="product"
+                                            onclick="toggleFavorite(this)" title="Tambah ke wishlist">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

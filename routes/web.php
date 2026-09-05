@@ -129,6 +129,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::post('favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
 });
 

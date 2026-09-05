@@ -79,10 +79,10 @@
                                         </td>
                                         <td class="fw-bold" style="color: #128965;">Rp {{ number_format($itemSubtotal, 0, ',', '.') }}</td>
                                         <td>
-                                            <form action="{{ route('carts.delete', $cart->id) }}" method="POST" onsubmit="return confirm('Hapus produk ini dari keranjang?');">
+                                            <form action="{{ route('carts.delete', $cart->id) }}" method="POST" id="form-delete-cart-{{ $cart->id }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="handleDeleteCart('{{ $cart->id }}')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
@@ -125,5 +125,24 @@
     @endif
 
 </div>
+
+<script>
+    function handleDeleteCart(id) {
+        Swal.fire({
+            title: "Hapus produk ini?",
+            text: "Produk akan dihapus dari keranjang.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Hapus!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('form-delete-cart-' + id).submit();
+            }
+        });
+    }
+</script>
+
+@endsection
 
 @endsection

@@ -161,14 +161,10 @@
             text-align: center;
         }
 
-        .pc-fav-form {
+        .pc-fav-btn {
             position: absolute;
             top: 10px;
             right: 10px;
-            margin: 0;
-        }
-
-        .pc-fav-btn {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -283,6 +279,38 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+    function toggleFavorite(btn) {
+        const id = btn.dataset.id;
+        const type = btn.dataset.type;
+        const icon = btn.querySelector('i');
+
+        fetch('{{ route('favorites.toggle') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ favoritable_id: id, favoritable_type: type })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.favorited) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+            } else {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+            }
+        })
+        .catch(() => {
+            Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan, coba lagi.' });
+        });
+    }
+</script>
 
     @stack('scripts')
 </body>

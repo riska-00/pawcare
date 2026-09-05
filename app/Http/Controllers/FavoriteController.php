@@ -33,6 +33,32 @@ class FavoriteController extends Controller
         return redirect()->route('favorites.index')->with('success', 'Berhasil ditambahkan ke wishlist.');
     }
 
+        public function toggle(Request $request)
+    {
+        $request->validate([
+            'favoritable_id' => 'required|integer',
+            'favoritable_type' => 'required|in:cat,product',
+        ]);
+
+        $favorite = Favorite::where('user_id', Auth::id())
+            ->where('favoritable_id', $request->favoritable_id)
+            ->where('favoritable_type', $request->favoritable_type)
+            ->first();
+
+        if ($favorite) {
+            $favorite->delete();
+            return response()->json(['favorited' => false]);
+        }
+
+        Favorite::create([
+            'user_id' => Auth::id(),
+            'favoritable_id' => $request->favoritable_id,
+            'favoritable_type' => $request->favoritable_type,
+        ]);
+
+        return response()->json(['favorited' => true]);
+    }
+
     public function destroy(string $id)
     {
         $favorite = Favorite::where('user_id', Auth::id())

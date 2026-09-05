@@ -238,14 +238,10 @@
                             </div>
                         @endif
                         <span class="pc-badge">Available</span>
-                        <form action="{{ route('favorites.store') }}" method="POST" class="pc-fav-form">
-                            @csrf
-                            <input type="hidden" name="favoritable_id" value="{{ $cat->id }}">
-                            <input type="hidden" name="favoritable_type" value="cat">
-                            <button type="submit" class="pc-fav-btn" title="Tambah ke wishlist">
-                                <i class="bi bi-heart"></i>
-                            </button>
-                        </form>
+                        <button type="button" class="pc-fav-btn" data-id="{{ $cat->id }}" data-type="cat"
+                            onclick="toggleFavorite(this)" title="Tambah ke wishlist">
+                            <i class="bi bi-heart"></i>
+                        </button>
                     </div>
                     <div class="pc-body">
                         <p class="pc-meta mb-1">{{ $cat->breed }} &bull; {{ $cat->gender === 'jantan' ? 'Jantan' : 'Betina' }}</p>
