@@ -35,7 +35,14 @@
             <a href="{{ route('admin.payments.index') }}"
                class="nav-link d-flex align-items-center px-3 py-2"
                style="color: #2A324C; background-color: {{ request()->routeIs('admin.payments.index') ? '#DCF4EA' : 'transparent' }}; border-left: 4px solid {{ request()->routeIs('admin.payments.index') ? '#128965' : 'transparent' }}; border-radius: 0;">
-                <i class="bi bi-truck me-2" style="color: {{ request()->routeIs('admin.payments.index') ? '#128965' : '#2A324C' }}"></i> Pembayaran &amp; Pengiriman
+                <i class="bi bi-credit-card me-2 " style="color: {{ request()->routeIs('admin.payments.index') ? '#128965' : '#2A324C' }}"></i> Pembayaran
+            </a>
+        </li>
+        <li class="nav-item mb-1">
+            <a href="{{ route('admin.shipments.index') }}"
+               class="nav-link d-flex align-items-center px-3 py-2"
+               style="color: #2A324C; background-color: {{ request()->routeIs('admin.shipments.index') ? '#DCF4EA' : 'transparent' }}; border-left: 4px solid {{ request()->routeIs('admin.shipments.index') ? '#128965' : 'transparent' }}; border-radius: 0;">
+                <i class="bi  bi-truck me-2" style="color: {{ request()->routeIs('admin.shipments.index') ? '#128965' : '#2A324C' }}"></i> Pengiriman
             </a>
         </li>
         <li class="nav-item mb-1">
