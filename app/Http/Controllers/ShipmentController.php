@@ -49,6 +49,10 @@ class ShipmentController extends Controller
             'tracking_number' => 'required_if:status,shipped|nullable|string|max:255',
         ]);
 
+        if ($request->status === 'delivered' && $shipment->status !== 'shipped') {
+            return back()->with('error', 'Pengiriman harus berstatus shipped sebelum dapat diubah menjadi delivered.');
+        }
+
         $data = [
             'status' => $request->status,
         ];
@@ -65,6 +69,6 @@ class ShipmentController extends Controller
 
         $shipment->update($data);
 
-        return redirect()->route('shipments.index')->with('success', 'Status pengiriman berhasil diperbarui.');
+        return redirect()->route('admin.shipments.index')->with('success', 'Status pengiriman berhasil diperbarui.');
     }
 }

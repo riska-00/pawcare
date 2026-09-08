@@ -47,6 +47,10 @@ class PaymentController extends Controller
             'status' => 'required|in:pending,confirmed,cancelled',
         ]);
 
+        if ($request->status === 'confirmed' && $payment->order->shipment->status !== 'delivered') {
+            return back()->with('error', 'Pembayaran tidak dapat dikonfirmasi sebelum pesanan diterima');
+        }
+
         $payment->update([
             'status' => $request->status,
             'confirmed_by' => in_array($request->status, ['confirmed', 'cancelled']) ? Auth::id() : $payment->confirmed_by,
@@ -59,6 +63,6 @@ class PaymentController extends Controller
             $payment->order->update(['status' => 'cancelled']);
         }
 
-        return redirect()->route('payments.index')->with('success', 'Status pembayaran berhasil diperbarui.');
+        return redirect()->route('admin.payments.index')->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 }
