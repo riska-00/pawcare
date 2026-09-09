@@ -46,9 +46,11 @@
             </a>
         </li>
         <li class="nav-item mb-1">
-            <a href="#" class="nav-link d-flex align-items-center px-3 py-2" style="color: #2A324C;">
-                <i class="bi bi-file-earmark-bar-graph me-2"></i> Laporan
-            </a>
+            <a href="{{ route('admin.reports.index') }}" 
+            class="nav-link d-flex align-items-center px-3 py-2" 
+            style="color: #2A324C; background-color: {{ request()->routeIs('admin.reports.index') ? '#DCF4EA' : 'transparent' }}; border-left: 4px solid {{ request()->routeIs('admin.reports.index') ? '#128965' : 'transparent' }}; border-radius: 0;">
+             <i class="bi bi-file-earmark-bar-graph me-2" style="color: {{ request()->routeIs('admin.reports.index') ? '#128965' : '#2A324C' }}"></i> Laporan
+        </a>
         </li>
         <li class="nav-item mb-1">
             <a href="{{ route('profile.edit') }}"

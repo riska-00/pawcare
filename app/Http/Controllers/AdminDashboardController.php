@@ -27,8 +27,26 @@ class AdminDashboardController extends Controller
         $pesananDikirim = Shipment::where('status', 'shipped')->count();
         $codTerkumpul = Payment::where('status', 'confirmed')->sum('amount');
 
+        $penjualanPerBulan = Order::where('status', 'completed')
+            ->selectRaw('MONTH(created_at) as bulan, SUM(total_price) as total')
+            ->whereYear('created_at', now()->year)
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
 
-        return view('admin.dashboard', compact('kucingTersedia', 'reservasiPending', 'pesananBaru', 'menungguVerifikasi', 'totalPenjualan', 'totalReservasi', 'pesananDikirim', 'codTerkumpul'));
+        $labelBulan = [];
+        $dataPenjualan = [];
+
+        $namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+        foreach (range(1, 12) as $bulan) {
+            $labelBulan[] = $namaBulan[$bulan - 1];
+            $item = $penjualanPerBulan->firstWhere('bulan', $bulan);
+            $dataPenjualan[] = $item ? (float) $item->total : 0;
+        }
+
+
+        return view('admin.dashboard', compact('kucingTersedia', 'reservasiPending', 'pesananBaru', 'menungguVerifikasi', 'totalPenjualan', 'totalReservasi', 'pesananDikirim', 'codTerkumpul', 'labelBulan', 'dataPenjualan'));
 
     }
 }

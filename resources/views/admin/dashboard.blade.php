@@ -39,22 +39,18 @@
  
     {{-- Grafik (placeholder) & Aktivitas Terbaru --}}
     <div class="row g-3 mb-4">
-        <div class="col-md-8">
-            <div class="p-4 rounded h-100 d-flex align-items-center justify-content-center"
-                style="background-color: #FFFFFF; border: 1px solid #DCD3B2; min-height: 250px;">
-                <div class="text-center" style="color: #707378;">
-                    <i class="bi bi-bar-chart-line" style="font-size: 2rem;"></i>
-                    <p class="mb-0 mt-2">Grafik penjualan akan ditampilkan di sini</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-3 rounded h-100" style="background-color: #FFFFFF; border: 1px solid #DCD3B2;">
-                <div class="fw-bold mb-3" style="color: #2A324C;">Aktivitas Terbaru</div>
-                <p class="small mb-0" style="color: #707378;">Belum ada aktivitas terbaru.</p>
-            </div>
+    <div class="col-md-8">
+        <div class="p-4 rounded h-100" style="background-color: #FFFFFF; border: 1px solid #DCD3B2; min-height: 250px;">
+            <canvas id="chartPenjualan"></canvas>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="p-3 rounded h-100" style="background-color: #FFFFFF; border: 1px solid #DCD3B2;">
+            <div class="fw-bold mb-3" style="color: #2A324C;">Aktivitas Terbaru</div>
+            <p class="small mb-0" style="color: #707378;">Belum ada aktivitas terbaru.</p>
+        </div>
+    </div>
+</div>
  
     {{-- 4 kartu statistik bawah --}}
     <div class="row g-3">
@@ -85,3 +81,38 @@
     </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    const ctx = document.getElementById('chartPenjualan');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @json($labelBulan),
+            datasets: [{
+                label: 'Total Penjualan (Rp)',
+                data: @json($dataPenjualan),
+                backgroundColor: '#128965',
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function (value) {
+                            return 'Rp ' + value.toLocaleString('id-ID');
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+@endpush
