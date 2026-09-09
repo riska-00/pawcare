@@ -11,6 +11,19 @@ class CatReservationController extends Controller
 {
     public function index()
     {
+        $expiredReservations = CatReservation::with('cat')
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->where('visit_date', '<=', now()->subDays(3))
+            ->get();
+
+        foreach ($expiredReservations as $reservation) {
+            $reservation->update(['status' => 'expired']);
+
+            if ($reservation->cat && $reservation->cat->status === 'reserved') {
+                $reservation->cat->update(['status' => 'available']);
+            }
+        }
+
         if (Auth::user()->role === 'admin') {
             $catReservations = CatReservation::with('cat', 'user')->get();
         } else {
