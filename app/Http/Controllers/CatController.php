@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cat;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,7 +42,10 @@ class CatController extends Controller
 
         $breeds = Cat::select('breed')->distinct()->pluck('breed');
 
-        return view('pages.cats.index', compact('cats', 'breeds'));
+        $favoritedCatIds = Favorite::where('user_id', Auth::id())
+        ->where('favoritable_type', 'cat')->pluck('favoritable_id');
+
+        return view('pages.cats.index', compact('cats', 'breeds', 'favoritedCatIds'));
     }
 
     public function create()

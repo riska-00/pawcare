@@ -184,7 +184,7 @@
                                         @endif
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-id="{{ $product->id }}" data-type="product"
                                             onclick="toggleFavorite(this)" title="Tambah ke wishlist">
-                                            <i class="bi bi-heart"></i>
+                                            <i class="bi {{ $favoritedProductIds->contains($product->id) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
                                         </button>
                                     </div>
                                 </div>

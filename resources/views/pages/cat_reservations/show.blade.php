@@ -37,7 +37,16 @@
                         <tr>
                             <th>Status Saat Ini</th>
                             <td>
-                                <span class="badge" style="background-color: #FFD85C; color: #2A324C;">
+                                <span class="badge" style="background-color:
+                                    {{ match($catReservation->status) {
+                                        'pending' => '#FFEBA6',
+                                        'confirmed' => '#DCF4EA',
+                                        'paid' => '#128965',
+                                        'completed' => '#2A324C',
+                                        'cancelled' => '#FCE2E2',
+                                        'expired' => '#EFEFEF',
+                                    } }};
+                                    color: {{ in_array($catReservation->status, ['pending', 'confirmed']) ? '#2A324C' : (in_array($catReservation->status, ['cancelled', 'expired']) ? '#707378' : '#fff') }};">
                                     {{ ucfirst($catReservation->status) }}
                                 </span>
                             </td>
@@ -136,7 +145,16 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="fw-bold" style="color: #2A324C;">Status</span>
-                        <span class="badge" style="background-color: #FFD85C; color: #2A324C;">
+                        <span class="badge" style="background-color:
+                            {{ match($catReservation->status) {
+                                'pending' => '#FFEBA6',
+                                'confirmed' => '#DCF4EA',
+                                'paid' => '#128965',
+                                'completed' => '#2A324C',
+                                'cancelled' => '#FCE2E2',
+                                'expired' => '#EFEFEF',
+                            } }};
+                            color: {{ in_array($catReservation->status, ['pending', 'confirmed']) ? '#2A324C' : (in_array($catReservation->status, ['cancelled', 'expired']) ? '#707378' : '#fff') }};">
                             {{ ucfirst($catReservation->status) }}
                         </span>
                     </div>

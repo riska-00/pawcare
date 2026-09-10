@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,10 @@ class ProductController extends Controller
 
         $categories = Product::select('category')->distinct()->pluck('category');
 
-        return view('pages.products.index', compact('products', 'categories'));
+        $favoritedProductIds = Favorite::where('user_id', Auth::id())
+        ->where('favoritable_type', 'product')->pluck('favoritable_id');
+
+        return view('pages.products.index', compact('products', 'categories', 'favoritedProductIds'));
     }
     public function create()
     {

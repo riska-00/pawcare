@@ -208,7 +208,7 @@
                             <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">Produk</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('favorites.*') ? 'active' : '' }}" href="{{ route('favorites.index') }}">Wishlist</a>
+                            <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Tentang Kami</a>
                         </li>
                     </ul>
 
@@ -237,6 +237,7 @@
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
                                 <a class="dropdown-item" href="{{ route('orders.index') }}">Pesanan Saya</a>
                                 <a class="dropdown-item" href="{{ route('cat_reservations.index') }}">Reservasi Saya</a>
+                                <a class="dropdown-item" href="{{ route('favorites.index') }}">Wishlist</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

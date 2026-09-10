@@ -269,7 +269,7 @@
                             <span class="pc-badge status-{{ $cat->status }}">{{ ucfirst($cat->status) }}</span>
                            <button type="button" class="pc-fav-btn" data-id="{{ $cat->id }}" data-type="cat"
                                 onclick="toggleFavorite(this)" title="Tambah ke wishlist">
-                                <i class="bi bi-heart"></i>
+                                <i class="bi {{ $favoritedCatIds->contains($cat->id) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
                             </button>
                         </div>
                         <div class="pc-body">
