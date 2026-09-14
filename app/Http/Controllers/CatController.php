@@ -100,7 +100,12 @@ class CatController extends Controller
     {
         $cat = Cat::findOrFail($id);
 
-        return view('pages.cats.show', compact('cat'));
+        $isFavorited = Favorite::where('user_id', Auth::id())
+        ->where('favoritable_type', 'cat')
+        ->where('favoritable_id', $cat->id)
+        ->exists();
+
+        return view('pages.cats.show', compact('cat', 'isFavorited'));
     }
 
     /**
