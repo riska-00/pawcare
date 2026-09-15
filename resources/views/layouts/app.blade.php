@@ -270,38 +270,25 @@
             @yield('content')
         </main>
 
-        <footer style="background-color: #FFEBA6; border-top: 1px solid #EFE6C0; padding: 24px 0; margin-top: 40px;">
+        <footer style="background-color: #FFEBA6; border-top: 1px solid #EFE6C0; padding: 32px 0; margin-top: 40px; text-align: center;">
             <div class="container">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <span style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.05rem; color: #2A324C;">
-                            🐾 Paw<span style="color: #128965;">Care</span>
-                        </span>
-                    </div>
-
-                    <div class="d-flex gap-4 flex-wrap">
-                        <a href="{{ route('home') }}" style="color: #5b5f6b; text-decoration: none; font-size: .85rem;">Beranda</a>
-                        <a href="{{ route('cats.index') }}" style="color: #5b5f6b; text-decoration: none; font-size: .85rem;">Kucing</a>
-                        <a href="{{ route('products.index') }}" style="color: #5b5f6b; text-decoration: none; font-size: .85rem;">Produk</a>
-                        <a href="{{ route('about') }}" style="color: #5b5f6b; text-decoration: none; font-size: .85rem;">Tentang Kami</a>
-                    </div>
-
-                    <div class="d-flex gap-2">
-                        <a href="#" style="width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 1px solid #EFE6C0; display: flex; align-items: center; justify-content: center; color: #128965;">
-                            <i class="bi bi-instagram" style="font-size: .8rem;"></i>
-                        </a>
-                        <a href="#" style="width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 1px solid #EFE6C0; display: flex; align-items: center; justify-content: center; color: #128965;">
-                            <i class="bi bi-whatsapp" style="font-size: .8rem;"></i>
-                        </a>
-                        <a href="mailto:pawcare.support@gmail.com" style="width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 1px solid #EFE6C0; display: flex; align-items: center; justify-content: center; color: #128965;">
-                            <i class="bi bi-envelope" style="font-size: .8rem;"></i>
-                        </a>
-                    </div>
+                <div style="font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.15rem; color: #2A324C; margin-bottom: 14px;">
+                    Paw<span style="color: #128965;">Care</span>
                 </div>
 
-                <hr style="border-color: #EFE6C0; margin: 16px 0 10px;">
+                <div style="margin-bottom: 16px;">
+                    <a href="#" class="d-inline-flex align-items-center justify-content-center mx-1" style="width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 1px solid #EFE6C0; color: #128965;">
+                        <i class="bi bi-instagram" style="font-size: .85rem;"></i>
+                    </a>
+                    <a href="#" class="d-inline-flex align-items-center justify-content-center mx-1" style="width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 1px solid #EFE6C0; color: #128965;">
+                        <i class="bi bi-whatsapp" style="font-size: .85rem;"></i>
+                    </a>
+                    <a href="mailto:pawcare.support@gmail.com" class="d-inline-flex align-items-center justify-content-center mx-1" style="width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 1px solid #EFE6C0; color: #128965;">
+                        <i class="bi bi-envelope" style="font-size: .85rem;"></i>
+                    </a>
+                </div>
 
-                <p style="font-size: .75rem; color: #707378; margin-bottom: 0; text-align: center;">&copy; {{ date('Y') }} PawCare. All rights reserved.</p>
+                <p style="font-size: .75rem; color: #707378; margin-bottom: 0;">&copy; {{ date('Y') }} PawCare. All rights reserved.</p>
             </div>
         </footer>
     </div>

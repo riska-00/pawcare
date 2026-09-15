@@ -84,7 +84,12 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('pages.products.show', compact('product'));
+        $isFavorited = Favorite::where('user_id', Auth::id())
+        ->where('favoritable_type', 'product')
+        ->where('favoritable_id', $product->id)
+        ->exists();
+
+        return view('pages.products.show', compact('product', 'isFavorited'));
     }
 
     public function edit(string $id)

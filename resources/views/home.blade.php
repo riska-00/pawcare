@@ -100,7 +100,6 @@
     <div class="d-flex justify-content-between align-items-end mb-3">
         <div>
             <h4 class="pc-section-title mb-0">🐾 Kucing Pilihan</h4>
-            <p class="pc-section-sub">Temukan sahabat berbulu yang siap menemanimu</p>
         </div>
         <a href="{{ route('cats.index') }}" style="color:var(--pc-green);text-decoration:none;font-weight:600;font-size:.9rem;">Lihat Semua &rarr;</a>
     </div>
@@ -135,7 +134,6 @@
     <div class="d-flex justify-content-between align-items-end mb-3">
         <div>
             <h4 class="pc-section-title mb-0">🛍️ Produk Pilihan</h4>
-            <p class="pc-section-sub">Kebutuhan harian si kucing, langsung tambah ke keranjang</p>
         </div>
         <a href="{{ route('products.index') }}" style="color:var(--pc-green);text-decoration:none;font-weight:600;font-size:.9rem;">Lihat Semua &rarr;</a>
     </div>
