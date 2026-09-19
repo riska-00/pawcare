@@ -2,24 +2,46 @@
 
 @section('title', 'Wishlist - PawCare')
 
+@section('styles')
+<style>
+    :root{ --wl-green:#128965; --wl-green-dark:#0e6e51; --wl-yellow:#FFD85C; --wl-navy:#2A324C; --wl-coral:#EC5D5D; --wl-cream:#FFFAE8; }
+    .wl-title{font-family:'Baloo 2',sans-serif;font-weight:800;color:var(--wl-navy);font-size:1.6rem;margin-bottom:20px;}
+
+    .wl-tile{position:relative;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #EFE6C0;text-decoration:none;display:block;transition:box-shadow .15s ease, transform .15s ease;}
+    .wl-tile:hover{box-shadow:0 10px 24px rgba(42,50,76,.1);transform:translateY(-3px);}
+    .wl-img-wrap{position:relative;aspect-ratio:1/1;background:#FFF3D6;}
+    .wl-img-wrap img{width:100%;height:100%;object-fit:cover;}
+    .wl-type-badge{position:absolute;top:10px;left:10px;font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:20px;color:#fff;}
+    .wl-type-badge.cat{background:var(--wl-green);}
+    .wl-type-badge.product{background:var(--wl-yellow);color:var(--wl-navy);}
+    .wl-remove-btn{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);border:none;display:flex;align-items:center;justify-content:center;color:var(--wl-coral);font-size:1rem;z-index:2;}
+    .wl-body{padding:12px 14px;}
+    .wl-name{font-weight:700;color:var(--wl-navy);font-size:.92rem;margin-bottom:2px;}
+    .wl-price{font-weight:700;color:var(--wl-green);font-size:.88rem;}
+
+    .wl-empty{text-align:center;padding:60px 20px;color:#707378;}
+    .wl-empty i{font-size:2.6rem;color:#DCD3B2;margin-bottom:12px;display:block;}
+    .wl-empty .btns a{border-radius:30px;padding:10px 24px;font-weight:700;font-size:.9rem;text-decoration:none;display:inline-block;}
+    .wl-empty .btn-primary-wl{background:var(--wl-green);color:#fff;}
+    .wl-empty .btn-primary-wl:hover{background:var(--wl-green-dark);color:#fff;}
+    .wl-empty .btn-outline-wl{border:2px solid var(--wl-navy);color:var(--wl-navy);background:#fff;}
+</style>
+@endsection
+
 @section('content')
 
 <div class="container py-4">
 
-    <h3 class="fw-bold mb-4" style="color: #2A324C;">Wishlist Saya</h3>
+    <h3 class="wl-title">Wishlist Saya</h3>
 
     @if ($favorites->isEmpty())
 
-        <div class="text-center py-5">
-            <i class="bi bi-heart" style="font-size: 2.5rem; color: #707378;"></i>
-            <p class="text-muted mt-3 mb-3">Wishlist kamu masih kosong.</p>
-            <div class="d-flex gap-2 justify-content-center">
-                <a href="{{ route('cats.index') }}" class="btn" style="background-color: #128965; color: #fff;">
-                    Lihat Kucing
-                </a>
-                <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">
-                    Lihat Produk
-                </a>
+        <div class="wl-empty">
+            <i class="bi bi-heart"></i>
+            <p class="mb-3">Wishlist kamu masih kosong.</p>
+            <div class="btns d-flex gap-2 justify-content-center">
+                <a href="{{ route('cats.index') }}" class="btn-primary-wl">Lihat Kucing</a>
+                <a href="{{ route('products.index') }}" class="btn-outline-wl">Lihat Produk</a>
             </div>
         </div>
 
@@ -33,36 +55,31 @@
 
                 @if ($item)
                     <div class="col-md-3 col-6">
-                        <div class="card h-100 border-0 shadow-sm">
-                            @if ($item->photo)
-                                <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->name }}"
-                                    class="card-img-top" style="height: 160px; object-fit: cover;">
-                            @else
-                                <div class="d-flex align-items-center justify-content-center bg-light" style="height: 160px;">
-                                    <span class="text-muted small">Tidak ada foto</span>
-                                </div>
-                            @endif
-                            <div class="card-body">
-                                <span class="badge mb-2" style="background-color: #FFEBA6; color: #2A324C;">
+                        <a href="{{ $favorite->favoritable_type === 'cat' ? route('cats.show', $item->id) : route('products.show', $item->id) }}" class="wl-tile">
+                            <div class="wl-img-wrap">
+                                @if ($item->photo)
+                                    <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->name }}">
+                                @else
+                                    <div class="d-flex align-items-center justify-content-center h-100">
+                                        <span class="text-muted small">Tidak ada foto</span>
+                                    </div>
+                                @endif
+                                <span class="wl-type-badge {{ $favorite->favoritable_type }}">
                                     {{ $favorite->favoritable_type === 'cat' ? 'Kucing' : 'Produk' }}
                                 </span>
-                                <h6 class="fw-bold mb-1">{{ $item->name }}</h6>
-                                <p class="small mb-2" style="color: #128965;">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-
-                                <div class="d-flex gap-2">
-                                    <a href="{{ $favorite->favoritable_type === 'cat' ? route('cats.show', $item->id) : route('products.show', $item->id) }}"
-                                        class="btn btn-sm btn-outline-secondary flex-fill">Detail</a>
-
-                                    <form action="{{ route('favorites.destroy', $favorite->id) }}" method="POST" id="form-delete-fav-{{ $favorite->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="handleDeleteFavorite('{{ $favorite->id }}')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                <form action="{{ route('favorites.destroy', $favorite->id) }}" method="POST" id="form-delete-fav-{{ $favorite->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="wl-remove-btn" onclick="event.preventDefault(); handleDeleteFavorite('{{ $favorite->id }}')" title="Hapus dari wishlist">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
                             </div>
-                        </div>
+                            <div class="wl-body">
+                                <div class="wl-name">{{ $item->name }}</div>
+                                <div class="wl-price">Rp {{ number_format($item->price, 0, ',', '.') }}</div>
+                            </div>
+                        </a>
                     </div>
                 @endif
             @endforeach
