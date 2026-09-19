@@ -97,8 +97,7 @@
 
         <h3 class="fw-bold mb-4" style="color: #2A324C;">Detail Pembayaran</h3>
 
-        <div class="row justify-content-center">
-            <div class="col-md-7">
+        <div style="max-width: 620px;">
                 <div class="card border-0 shadow-sm p-4">
                     <table class="table table-borderless mb-3">
                         <tr>

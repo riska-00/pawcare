@@ -33,9 +33,14 @@
     .od-total-label{font-weight:700;color:var(--od-navy);}
     .od-total-value{font-weight:800;color:var(--od-green);font-size:1.2rem;}
 
-    .od-side-card{background:#fff;border-radius:16px;border:1px solid #EFE6C0;padding:20px;margin-bottom:14px;}
+    .od-side-card{background:#fff;border-radius:16px;border:1px solid #EFE6C0;padding:20px;margin-bottom:14px;display:block;text-decoration:none;transition:box-shadow .15s ease, transform .15s ease;}
+    .od-side-card.clickable{cursor:pointer;}
+    .od-side-card.clickable:hover{box-shadow:0 8px 20px rgba(42,50,76,.1);transform:translateY(-2px);}
     .od-side-title{font-weight:700;color:var(--od-navy);font-size:.9rem;margin-bottom:10px;}
     .od-side-empty{color:#707378;font-size:.85rem;margin-bottom:0;}
+
+    .od-side-link{font-size:.82rem;font-weight:600;color:var(--od-green);text-decoration:none;}
+    .od-side-link:hover{color:var(--od-green-dark);text-decoration:underline;}
 </style>
 @endsection
 
@@ -107,15 +112,16 @@
                         <span class="od-status {{ $order->payment->status === 'confirmed' ? 'completed' : $order->payment->status }} mb-2 d-inline-block">
                             {{ ucfirst($order->payment->status) }}
                         </span>
-                        <p class="od-side-empty">Jumlah: Rp {{ number_format($order->payment->amount, 0, ',', '.') }}</p>
+                        <p class="od-side-empty mb-2">Jumlah: Rp {{ number_format($order->payment->amount, 0, ',', '.') }}</p>
+                        <a href="{{ route('payments.show', $order->payment->id) }}" class="od-side-link">Lihat Detail Pembayaran &rarr;</a>
                     @else
                         <p class="od-side-empty">Belum ada data pembayaran.</p>
                     @endif
                 </div>
 
-                <div class="od-side-card">
-                    <div class="od-side-title">Status Pengiriman</div>
-                    @if ($order->shipment)
+                @if ($order->shipment)
+                    <a href="{{ route('shipments.show', $order->shipment->id) }}" class="od-side-card clickable">
+                        <div class="od-side-title">Status Pengiriman</div>
                         <span class="od-status {{ $order->shipment->status === 'delivered' ? 'completed' : ($order->shipment->status === 'shipped' ? 'paid' : 'pending') }} mb-2 d-inline-block">
                             {{ ucfirst($order->shipment->status) }}
                         </span>
@@ -123,12 +129,16 @@
                             <p class="od-side-empty mb-1">Kurir: {{ $order->shipment->courier }}</p>
                         @endif
                         @if ($order->shipment->tracking_number)
-                            <p class="od-side-empty">No. Resi: {{ $order->shipment->tracking_number }}</p>
+                            <p class="od-side-empty mb-2">No. Resi: {{ $order->shipment->tracking_number }}</p>
                         @endif
-                    @else
-                        <p class="od-side-empty">Belum ada data pengiriman.</p>
-                    @endif
-                </div>
+                        <span class="od-side-link">Lihat Detail Pengiriman &rarr;</span>
+                    </a>
+                @else
+                    <div class="od-side-card">
+                        <div class="od-side-title">Status Pengiriman</div>
+                        <p class="od-side-empty mb-0">Belum ada data pengiriman.</p>
+                    </div>
+                @endif
             </div>
         </div>
 
