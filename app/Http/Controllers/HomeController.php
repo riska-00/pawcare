@@ -26,6 +26,6 @@ class HomeController extends Controller
         $cats = Cat::where('status', 'available')->latest()->take(4)->get();
         $products = Product::latest()->take(4)->get();
 
-        return view('home', compact('cats', 'products'));
+        return view('user.home', compact('cats', 'products'));
     }
 }

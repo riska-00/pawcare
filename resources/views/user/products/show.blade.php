@@ -1,4 +1,4 @@
-@extends(Auth::user()->role === 'admin' ? 'layouts.admin' : 'layouts.app')
+@extends('layouts.app')
 
 @section('title', $product->name . ' - PawCare')
 
@@ -30,24 +30,16 @@
 
     .ps-btn{background:var(--ps-green);color:#fff;border:none;border-radius:12px;font-weight:700;padding:13px 0;width:100%;font-size:.95rem;}
     .ps-btn:hover{background:var(--ps-green-dark);color:#fff;}
-    .ps-btn-outline{background:#fff;color:var(--ps-navy);border:2px solid var(--ps-navy);border-radius:12px;font-weight:700;padding:11px 0;width:100%;text-decoration:none;display:block;text-align:center;font-size:.95rem;}
-    .ps-btn-outline:hover{background:var(--ps-cream);color:var(--ps-navy);}
 </style>
 @endsection
 
 @section('content')
 
-<div class="container{{ Auth::user()->role !== 'admin' ? ' py-5' : '-fluid' }}">
+<div class="container py-5">
 
-    @if (Auth::user()->role === 'admin')
-        <div class="p-3 rounded mb-4" style="background-color: #FFD85C;">
-            <h3 class="fw-bold mb-0" style="color: #2A324C;">Detail Produk</h3>
-        </div>
-    @else
-        <div class="ps-crumb">
-            <a href="{{ route('products.index') }}">Produk</a> &gt; <span style="color:#2A324C;">{{ $product->name }}</span>
-        </div>
-    @endif
+    <div class="ps-crumb">
+        <a href="{{ route('products.index') }}">Produk</a> &gt; <span style="color:#2A324C;">{{ $product->name }}</span>
+    </div>
 
     <div class="row g-4">
         <div class="col-md-6">
@@ -60,12 +52,10 @@
                     </div>
                 @endif
 
-                @if (Auth::user()->role !== 'admin')
-                    <button type="button" class="ps-fav-btn" data-id="{{ $product->id }}" data-type="product"
-                        onclick="toggleFavorite(this)" title="Tambah ke wishlist">
-                        <i class="bi {{ $isFavorited ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                    </button>
-                @endif
+                <button type="button" class="ps-fav-btn" data-id="{{ $product->id }}" data-type="product"
+                    onclick="toggleFavorite(this)" title="Tambah ke wishlist">
+                    <i class="bi {{ $isFavorited ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                </button>
             </div>
         </div>
 
@@ -79,27 +69,18 @@
                 <div class="ps-desc-title ps-baloo">Deskripsi</div>
                 <p class="ps-desc-text">{{ $product->description ?: 'Tidak ada deskripsi untuk produk ini.' }}</p>
 
-                @if (Auth::user()->role === 'admin')
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('admin.products.edit', $product->id) }}" class="ps-btn text-decoration-none">
-                            <i class="bi bi-pencil"></i> Edit Data
-                        </a>
-                        <a href="{{ route('products.index') }}" class="ps-btn-outline">Kembali</a>
-                    </div>
+                @if ($product->stock > 0)
+                    <form action="{{ route('carts.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <div class="ps-qty">
+                            <label class="mb-0 fw-semibold" style="color:#2A324C;">Jumlah</label>
+                            <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}">
+                        </div>
+                        <button type="submit" class="ps-btn">Tambah ke Keranjang</button>
+                    </form>
                 @else
-                    @if ($product->stock > 0)
-                        <form action="{{ route('carts.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <div class="ps-qty">
-                                <label class="mb-0 fw-semibold" style="color:#2A324C;">Jumlah</label>
-                                <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}">
-                            </div>
-                            <button type="submit" class="ps-btn">Tambah ke Keranjang</button>
-                        </form>
-                    @else
-                        <button type="button" class="ps-btn" style="background:#EFEFEF;color:#707378;" disabled>Stok Habis</button>
-                    @endif
+                    <button type="button" class="ps-btn" style="background:#EFEFEF;color:#707378;" disabled>Stok Habis</button>
                 @endif
             </div>
         </div>

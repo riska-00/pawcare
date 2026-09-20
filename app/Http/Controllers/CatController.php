@@ -45,8 +45,8 @@ class CatController extends Controller
         $favoritedCatIds = Favorite::where('user_id', Auth::id())
         ->where('favoritable_type', 'cat')->pluck('favoritable_id');
 
-        return view('pages.cats.index', compact('cats', 'breeds', 'favoritedCatIds'));
-    }
+        return view(Auth::user()->role === 'admin' ? 'admin.cats.index' : 'user.cats.index', compact('cats', 'breeds', 'favoritedCatIds'));
+        }
 
     public function create()
     {
@@ -54,7 +54,7 @@ class CatController extends Controller
             abort(403);
         }
 
-        return view('pages.cats.create');
+        return view('admin.cats.create');
     }
 
     public function store(Request $request)
@@ -105,8 +105,8 @@ class CatController extends Controller
         ->where('favoritable_id', $cat->id)
         ->exists();
 
-        return view('pages.cats.show', compact('cat', 'isFavorited'));
-    }
+        return view(Auth::user()->role === 'admin' ? 'admin.cats.show' : 'user.cats.show', compact('cat', 'isFavorited'));
+        }
 
     /**
      * Show the form for editing the specified resource.
@@ -120,7 +120,7 @@ class CatController extends Controller
 
         $cat = Cat::findOrFail($id);
 
-        return view('pages.cats.edit', compact('cat'));
+        return view('admin.cats.edit', compact('cat'));
     }
 
     /**

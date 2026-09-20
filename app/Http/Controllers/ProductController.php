@@ -36,7 +36,7 @@ class ProductController extends Controller
         $favoritedProductIds = Favorite::where('user_id', Auth::id())
         ->where('favoritable_type', 'product')->pluck('favoritable_id');
 
-        return view('pages.products.index', compact('products', 'categories', 'favoritedProductIds'));
+        return view(Auth::user()->role === 'admin' ? 'admin.products.index' : 'user.products.index', compact('products', 'categories', 'favoritedProductIds'));
     }
     public function create()
     {
@@ -44,7 +44,7 @@ class ProductController extends Controller
             abort(403);
         }
 
-        return view('pages.products.create');
+        return view('admin.products.create');
     }
 
     public function store(Request $request)
@@ -89,7 +89,7 @@ class ProductController extends Controller
         ->where('favoritable_id', $product->id)
         ->exists();
 
-        return view('pages.products.show', compact('product', 'isFavorited'));
+        return view(Auth::user()->role === 'admin' ? 'admin.products.show' : 'user.products.show', compact('product', 'isFavorited'));
     }
 
     public function edit(string $id)
@@ -100,7 +100,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        return view('pages.products.edit', compact('product'));
+        return view('admin.products.edit', compact('product'));
     }
 
     public function update(Request $request, string $id)
