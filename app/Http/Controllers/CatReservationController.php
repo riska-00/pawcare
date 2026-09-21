@@ -32,7 +32,7 @@ class CatReservationController extends Controller
                 ->get();
         }
 
-        return view('pages.cat_reservations.index', compact('catReservations'));
+        return view(Auth::user()->role === 'admin' ? 'admin.cat_reservations.index' : 'user.cat_reservations.index', compact('catReservations'));
     }
 
     public function create(Request $request)
@@ -43,7 +43,7 @@ class CatReservationController extends Controller
             return redirect()->route('cats.show', $cat->id)->with('error', 'Kucing ini sudah tidak tersedia untuk reservasi');
         }
 
-        return view('pages.cat_reservations.create', compact('cat'));
+        return view('user.cat_reservations.create', compact('cat'));
     }
 
     public function store(Request $request)
@@ -84,7 +84,7 @@ class CatReservationController extends Controller
             abort(403);
         }
 
-        return view('pages.cat_reservations.show', compact('catReservation'));
+        return view(Auth::user()->role === 'admin' ? 'admin.cat_reservations.show' : 'user.cat_reservations.show', compact('catReservation'));
     }
 
         public function update(Request $request, string $id)
