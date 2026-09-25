@@ -21,7 +21,7 @@ class ShipmentController extends Controller
                 ->get();
         }
 
-        return view('pages.shipments.index', compact('shipments'));
+        return view(Auth::user()->role === 'admin' ? 'admin.shipments.index' : 'user.shipments.index', compact('shipments'));
     }
 
     public function show(string $id)
@@ -32,7 +32,7 @@ class ShipmentController extends Controller
             abort(403);
         }
 
-        return view('pages.shipments.show', compact('shipment'));
+        return view(Auth::user()->role === 'admin' ? 'admin.shipments.show' : 'user.shipments.show', compact('shipment'));
     }
 
     public function update(Request $request, string $id)

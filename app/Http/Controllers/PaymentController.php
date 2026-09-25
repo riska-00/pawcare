@@ -21,7 +21,7 @@ class PaymentController extends Controller
                 ->get();
         }
 
-        return view('pages.payments.index', compact('payments'));
+        return view(Auth::user()->role === 'admin' ? 'admin.payments.index' : 'user.payments.index', compact('payments'));
     }
     
     public function show(string $id)
@@ -32,7 +32,7 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        return view('pages.payments.show', compact('payment'));
+        return view(Auth::user()->role === 'admin' ? 'admin.payments.show' : 'user.payments.show', compact('payment'));
     }
 
     public function update(Request $request, string $id)

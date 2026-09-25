@@ -13,7 +13,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        return view('pages.profile.edit', compact('user'));
+        return view(Auth::user()->role === 'admin' ? 'admin.profile.edit' : 'user.profile.edit', compact('user'));
     }
     public function update(Request $request)
     {

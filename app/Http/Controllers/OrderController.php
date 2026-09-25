@@ -23,7 +23,7 @@ class OrderController extends Controller
             ->where('user_id', Auth::id())->latest()->get();
         }
 
-        return view('pages.orders.index', compact('orders'));
+        return view(Auth::user()->role === 'admin' ? 'admin.orders.index' : 'user.orders.index', compact('orders'));
     }
 
     public function create()
@@ -34,7 +34,7 @@ class OrderController extends Controller
             return redirect()->route('carts.index')->with('error', 'Keranjang masih kosong');
         }
 
-        return view('pages.orders.create', compact('carts'));
+        return view('user.orders.create', compact('carts'));
     }
 
     public function store(Request $request)
@@ -140,7 +140,7 @@ class OrderController extends Controller
                 ->findOrFail($id);
         }
 
-        return view('pages.orders.show', compact('order'));
+        return view(Auth::user()->role === 'admin' ? 'admin.orders.show' : 'user.orders.show', compact('order'));
     }
 
 }

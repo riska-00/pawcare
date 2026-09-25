@@ -12,7 +12,7 @@ class FavoriteController extends Controller
     {
         $favorites = Favorite::where('user_id', Auth::id())->latest()->get();
 
-        return view('pages.favorites.index', compact('favorites'));
+        return view('user.favorites.index', compact('favorites'));
     }
 
     public function store(Request $request)

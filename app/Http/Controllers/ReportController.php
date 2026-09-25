@@ -60,6 +60,6 @@ class ReportController extends Controller
             $data = $query->latest()->get();
         }
 
-        return view('pages.reports.index', compact('type', 'from', 'to', 'data', 'totalPenjualan'));
+        return view('admin.reports.index', compact('type', 'from', 'to', 'data', 'totalPenjualan'));
     }
 }
