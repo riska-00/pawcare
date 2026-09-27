@@ -6,6 +6,7 @@
 @section('styles')
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
 
+
 <style>
     :root {
         --ab-green: #128965;
@@ -15,6 +16,10 @@
         --ab-coral: #EC5D5D;
         --ab-cream: #FFFAE8;
         --ab-border: #EFE6C0;
+    }
+
+    * {
+        box-sizing: border-box;
     }
 
     .about-page {
@@ -28,136 +33,175 @@
     }
 
     
+    
     /* HERO TENTANG KAMI */
     .ab-hero {
         position: relative;
-        min-height: 330px;
-        background: linear-gradient(135deg, #FFFAE8, #FFF3C8);
+        min-height: 410px;
+        padding: 55px 24px;
+        background: linear-gradient(
+            115deg,
+            #EAF5E5 0%,
+            #FFFAE8 55%,
+            #FFF0D6 100%
+        );
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         text-align: center;
         overflow: hidden;
-        padding: 55px 20px 85px;
     }
 
+    /* Dekorasi lingkaran */
+    .ab-hero::before {
+        content: "";
+        position: absolute;
+        width: 145px;
+        height: 145px;
+        border-radius: 50%;
+        background: #F8E59B;
+        top: 30px;
+        left: 6%;
+    }
+
+    .ab-hero::after {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(18, 137, 101, .13);
+        bottom: 25px;
+        right: 10%;
+    }
+
+    /* Konten hero */
     .ab-hero-content {
         position: relative;
         z-index: 2;
-        max-width: 750px;
-        margin: auto;
+        width: 100%;
+        max-width: 850px;
+        margin: 0 auto;
     }
 
+    /* Label */
     .ab-hero-label {
-        display: inline-block;
-        background: #FFE49A;
-        color: #0e6e51;
-        padding: 7px 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: #FFFFFF;
+        border: 2px solid #2A324C;
+        color: #2A324C;
         border-radius: 30px;
+        padding: 6px 18px;
         font-size: .78rem;
         font-weight: 800;
-        letter-spacing: 1px;
-        margin-bottom: 15px;
+        margin-bottom: 18px;
     }
 
+    /* Judul */
     .ab-hero h1 {
         font-family: 'Baloo 2', sans-serif;
-        color: #128965;
-        font-size: clamp(2.5rem, 5vw, 3.7rem);
+        font-size: clamp(2.2rem, 4vw, 3rem);
         font-weight: 800;
-        line-height: 1.1;
-        margin: 0 0 16px;
+        line-height: 1.15;
+        color: #2A324C;
+        margin: 0 0 14px;
     }
 
     .ab-hero h1 span {
-        color: #174F3C;
+        color: #128965;
     }
 
+    /* Deskripsi */
     .ab-hero p {
-        font-size: 1rem;
+        font-size: .98rem;
+        line-height: 1.7;
         color: #626879;
-        margin: 0;
+        max-width: 600px;
+        margin: 0 auto 25px;
     }
 
-    /* DEKORASI */
-    .ab-paw {
-        position: absolute;
-        color: #F3BD45;
-        opacity: .85;
-        z-index: 1;
+    /* Tiga label */
+    .ab-hero-features {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
     }
 
-    .ab-paw-left {
-        top: 65px;
-        left: 19%;
-        transform: rotate(-20deg);
+    .ab-hero-feature {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-width: 170px;
+        padding: 11px 17px;
+        background: #FFFFFF;
+        border: 2px solid #2A324C;
+        border-radius: 15px;
+        color: #2A324C;
+        font-size: .85rem;
+        font-weight: 800;
     }
 
-    .ab-paw-right {
-        top: 70px;
-        right: 15%;
-        transform: rotate(25deg);
+    .ab-hero-feature i {
+        font-size: 1.15rem;
+        color: #128965;
+        flex-shrink: 0;
     }
 
-    .ab-paw-small {
-        bottom: 95px;
-        right: 25%;
-        transform: rotate(-15deg);
-    }
-
-    /* GELOMBANG */
-    .ab-hero-wave {
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100%;
-        height: 95px;
-        z-index: 1;
-    }
-
-    .ab-hero-wave svg {
-        width: 100%;
-        height: 100%;
-        display: block;
-    }
-
-    
     /* RESPONSIVE */
-    @media (max-width: 992px) {
-        .ab-intro-grid {
-            grid-template-columns: 1fr;
-            gap: 35px;
+    @media (max-width: 768px) {
+        .ab-hero {
+            min-height: 380px;
+            padding: 50px 20px;
         }
 
-        .ab-benefits-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .ab-hero::before {
+            width: 100px;
+            height: 100px;
+            left: -30px;
+        }
+
+        .ab-hero::after {
+            width: 75px;
+            height: 75px;
+            right: -20px;
+        }
+
+        .ab-hero h1 {
+            font-size: 2.3rem;
+        }
+
+        .ab-hero p {
+            font-size: .9rem;
+        }
+
+        .ab-hero-feature {
+            min-width: 0;
+            padding: 10px 13px;
+            font-size: .78rem;
         }
     }
 
-    @media (max-width: 576px) {
-        .ab-section,
-        .ab-cta-section {
-            padding: 45px 0;
+    @media (max-width: 480px) {
+        .ab-hero h1 {
+            font-size: 2rem;
         }
 
-        .ab-benefits {
-            padding: 50px 0;
-        }
-
-        .ab-benefits-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .ab-facts {
-            padding: 24px;
-        }
-
-        .ab-cta {
-            padding: 40px 20px;
+        .ab-hero-feature {
+            width: 100%;
+            max-width: 270px;
         }
     }
 
-    /* INTRO */
+    /* =========================
+       CERITA KAMI
+    ========================= */
+
     .ab-section {
         padding: 75px 0;
     }
@@ -210,7 +254,10 @@
         line-height: 1.8;
     }
 
-    /* FAKTA */
+    /* =========================
+       SEKILAS PAWCARE
+    ========================= */
+
     .ab-facts {
         background: #FFFFFF;
         border: 1px solid var(--ab-border);
@@ -229,6 +276,7 @@
     .ab-facts-icon {
         width: 52px;
         height: 52px;
+        flex-shrink: 0;
         border-radius: 15px;
         background: #E4F6ED;
         display: flex;
@@ -272,18 +320,20 @@
         font-weight: 800;
     }
 
-    /* KEUNGGULAN */
+    /* =========================
+       MENGAPA PAWCARE
+    ========================= */
+
     .ab-benefits {
         background: #FFF4D1;
-        padding: 70px 0;
+        padding: 60px 0;
     }
 
     .ab-center {
         text-align: center;
     }
 
-    
-    .ab-benefits-grid {
+    .about-page .ab-benefits-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 16px;
@@ -291,39 +341,13 @@
     }
 
     .ab-benefit-card {
-        background: #fff;
-        border: 1px solid #EFE6C0;
+        background: #FFFFFF;
+        border: 1px solid var(--ab-border);
         border-radius: 16px;
-        padding: 20px 15px;
+        padding: 22px 15px;
+        min-width: 0;
         text-align: center;
-    }
-
-    .ab-benefit-icon {
-        width: 55px;
-        height: 55px;
-        border-radius: 15px;
-        margin: 0 auto 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.6rem;
-    }
-
-    .ab-benefit-card h4 {
-        font-size: 1rem;
-        margin-bottom: 8px;
-    }
-
-    .ab-benefit-card p {
-        font-size: .82rem;
-        line-height: 1.6;
-        margin: 0;
-    }
-
-    @media (max-width: 992px) {
-        .ab-benefits-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+        transition: transform .25s, box-shadow .25s;
     }
 
     .ab-benefit-card:hover {
@@ -332,15 +356,15 @@
     }
 
     .ab-benefit-icon {
-        width: 68px;
-        height: 68px;
-        border-radius: 20px;
+        width: 55px;
+        height: 55px;
+        border-radius: 15px;
         background: #E9F7EE;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 20px;
-        font-size: 2rem;
+        margin: 0 auto 14px;
+        font-size: 1.6rem;
     }
 
     .ab-benefit-card:nth-child(2) .ab-benefit-icon {
@@ -357,19 +381,23 @@
 
     .ab-benefit-card h4 {
         font-family: 'Baloo 2', sans-serif;
-        font-size: 1.15rem;
+        font-size: 1rem;
         font-weight: 800;
-        margin-bottom: 10px;
+        color: var(--ab-navy);
+        margin-bottom: 8px;
     }
 
     .ab-benefit-card p {
-        font-size: .85rem;
-        line-height: 1.8;
+        font-size: .82rem;
+        line-height: 1.6;
         color: #777D89;
         margin: 0;
     }
 
-    /* CTA */
+    /* =========================
+       CTA
+    ========================= */
+
     .ab-cta-section {
         padding: 75px 0;
     }
@@ -379,7 +407,7 @@
         border-radius: 28px;
         padding: 55px 30px;
         text-align: center;
-        color: white;
+        color: #FFFFFF;
         position: relative;
         overflow: hidden;
     }
@@ -453,51 +481,82 @@
 
     .ab-btn-outline {
         background: transparent;
-        color: white;
+        color: #FFFFFF;
         border: 2px solid rgba(255, 255, 255, .8);
     }
 
-    /* RESPONSIVE */
+    /* =========================
+       RESPONSIVE TABLET
+    ========================= */
+
     @media (max-width: 992px) {
         .ab-intro-grid {
             grid-template-columns: 1fr;
             gap: 35px;
         }
 
-        .ab-benefits-grid {
-            grid-template-columns: repeat(2, 1fr);
+        .about-page .ab-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
-        .ab-paw {
-        position: absolute;
-        color: #F3BD45;
-        font-size: 2rem;
-        opacity: .85;
-        z-index: 1;
-    }
+    /* =========================
+       RESPONSIVE MOBILE
+    ========================= */
+
+    @media (max-width: 576px) {
+        .ab-hero {
+            min-height: 290px;
+            padding: 50px 20px 75px;
+        }
+
+        .ab-hero h1 {
+            font-size: 2.3rem;
+        }
+
+        .ab-hero p {
+            font-size: .88rem;
+        }
+
+        .ab-paw-left {
+            left: 5%;
+            top: 40px;
+        }
+
+        .ab-paw-right {
+            right: 5%;
+            top: 45px;
+        }
+
+        .ab-paw-small {
+            display: none;
+        }
+
+        .ab-hero-wave {
+            height: 60px;
+        }
 
         .ab-section,
         .ab-cta-section {
             padding: 45px 0;
-    }
+        }
 
         .ab-benefits {
             padding: 50px 0;
-    }
+        }
 
-        .ab-benefits-grid {
+        .about-page .ab-benefits-grid {
             grid-template-columns: 1fr;
-    }
+        }
 
         .ab-facts {
             padding: 24px;
-    }
+        }
 
         .ab-cta {
             padding: 40px 20px;
+        }
     }
-
 </style>
 @endsection
 
@@ -505,82 +564,53 @@
 
 <div class="about-page">
 
-    <!-- HERO TENTANG KAMI -->
-    <section class="ab-hero">
+    
+<!-- HERO TENTANG KAMI -->
+<section class="ab-hero">
 
-        <!-- Dekorasi jejak kaki -->
-        <div class="ab-paw ab-paw-left">
-            🐾
+    <div class="ab-hero-content">
+
+        <!-- Label -->
+        <div class="ab-hero-label">
+            🐾 Tentang Kami
         </div>
 
-        <div class="ab-paw ab-paw-right">
-            🐾
+        <!-- Judul -->
+        <h1>
+            Kenali <span>PawCare</span><br>
+            Lebih Dekat
+        </h1>
+
+        <!-- Deskripsi -->
+        <p>
+            Mengenal cerita dan komitmen kami dalam
+            memberikan yang terbaik untuk sahabat berbulu.
+        </p>
+
+        <div class="ab-hero-features">
+
+        <div class="ab-hero-feature">
+                <i class="bi bi-shield-check"></i>
+                <span>Sehat & Terawat</span>
+            </div>
+
+            <div class="ab-hero-feature">
+                <i class="bi bi-star"></i>
+                <span>Kualitas Terbaik</span>
+            </div>
+
+            <div class="ab-hero-feature">
+                <i class="bi bi-truck"></i>
+                <span>Bayar di Tempat</span>
+            </div>
+
+            <div class="ab-hero-feature">
+                <i class="bi bi-clock"></i>
+                <span>Reservasi Online</span>
+            </div>
+
         </div>
-
-        <div class="ab-paw ab-paw-small">
-            🐾
-        </div>
-
-        <!-- Konten hero -->
-        <div class="ab-hero-content">
-
-            <span class="ab-hero-label">
-                TENTANG KAMI
-            </span>
-
-            <h1>
-                Kenali PawCare<br>
-                <span>Lebih Dekat</span>
-            </h1>
-
-            <p>
-                Rumah penuh kasih untuk sahabat berbulu Anda.
-            </p>
-
-        </div>
-
-        <!-- Gelombang dekoratif -->
-        <div class="ab-hero-wave">
-            <svg
-                viewBox="0 0 1440 100"
-                preserveAspectRatio="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-            >
-                <!-- Gelombang kuning -->
-                <path
-                    d="M0,45 C220,5 300,110 540,65
-                    C780,20 880,110 1100,45
-                    C1250,0 1350,50 1440,35
-                    L1440,100 L0,100 Z"
-                    fill="#FFE49A"
-                />
-
-                <!-- Gelombang hijau kiri dan kanan -->
-                <path
-                    d="M0,30 C100,20 160,45 240,75
-                    L0,100 Z"
-                    fill="#128965"
-                />
-
-                <path
-                    d="M1100,65 C1240,10 1330,20 1440,40
-                    L1440,100 Z"
-                    fill="#128965"
-                />
-
-                <!-- Transisi ke bagian konten -->
-                <path
-                    d="M0,75 C220,115 350,65 540,82
-                    C750,100 850,65 1050,78
-                    C1250,95 1350,65 1440,80
-                    L1440,100 L0,100 Z"
-                    fill="#FFFAE8"
-                />
-            </svg>
-        </div>
-
-    </section>
+</section>
 
     <!-- TENTANG KAMI -->
     <section class="ab-section">

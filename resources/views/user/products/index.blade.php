@@ -7,23 +7,36 @@
 <style>
     :root{ --pp-green:#128965; --pp-green-dark:#0e6e51; --pp-yellow:#FFD85C; --pp-navy:#2A324C; --pp-coral:#EC5D5D; --pp-cream:#FFFAE8; }
     .pp-baloo{ font-family:'Baloo 2',sans-serif; }
-    .pp-hero{ position:relative; padding:50px 0 60px; overflow:hidden;
-        background: radial-gradient(circle at 15% 20%, rgba(18,137,101,.14) 0%, transparent 35%),
-                    radial-gradient(circle at 85% 15%, rgba(255,216,92,.3) 0%, transparent 32%),
-                    var(--pp-cream);
+    
+    .pp-hero{ position:relative; padding:60px 0 70px; overflow:hidden; font-family:'Baloo 2',sans-serif;
+    background: radial-gradient(circle at 12% 18%, rgba(18,137,101,.16) 0%, transparent 35%),
+                radial-gradient(circle at 88% 12%, rgba(255,216,92,.35) 0%, transparent 32%),
+                radial-gradient(circle at 90% 85%, rgba(236,93,93,.14) 0%, transparent 30%),
+                var(--pp-cream);
     }
-    .pp-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(to bottom, transparent, var(--pp-cream));}
-    .pp-blob{position:absolute;border-radius:50%;opacity:.5;}
-    .pp-b1{width:130px;height:130px;background:var(--pp-yellow);top:10px;left:8%;}
-    .pp-b2{width:90px;height:90px;background:var(--pp-coral);opacity:.15;bottom:0;right:10%;}
-    .pp-hero h1{font-size:2.2rem;font-weight:800;color:var(--pp-navy);}
+    .pp-hero::after{
+        content:"";
+        position:absolute;
+        left:0; right:0; bottom:0;
+        height:80px;
+        background:linear-gradient(to bottom, transparent, var(--pp-cream));
+        pointer-events:none;
+    }
+    .pp-blob{position:absolute;border-radius:50%;opacity:.55;}
+    .pp-b1{width:150px;height:150px;background:var(--pp-yellow);top:10px;left:6%;}
+    .pp-b2{width:100px;height:100px;background:var(--pp-green);opacity:.18;bottom:10px;right:10%;}
+    .pp-label-tag{display:inline-block;padding:4px 14px;border-radius:20px;background:#fff;border:2px solid var(--pp-navy);font-weight:700;font-size:.72rem;margin:8px 0;color:var(--pp-navy);}
+    .pp-hero h1{font-size:2.6rem;font-weight:800;color:var(--pp-navy);}
     .pp-hero h1 span{color:var(--pp-green);}
-    .pp-hero p{color:#5b5f6b;font-size:.95rem;}
-    .pp-search{max-width:520px;margin:20px auto 0;background:#fff;border-radius:50px;padding:8px;display:flex;box-shadow:0 8px 24px rgba(42,50,76,.1);border:1px solid #EFE6C0;}
-    .pp-search input{border:none;flex:1;padding:9px 18px;background:transparent;font-size:.95rem;}
-    .pp-search input:focus{outline:none;}
-    .pp-search button{border:none;background:var(--pp-green);color:#fff;border-radius:50px;padding:0 22px;font-weight:700;}
-    .pp-chips{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap;}
+    .pp-hero p{color:#5b5f6b;font-size:1.05rem;max-width:480px;margin:0 auto 26px;font-family:-apple-system,sans-serif;}
+
+    .pp-search-pill{max-width:520px;margin:0 auto;background:#fff;border-radius:60px;padding:8px;display:flex;box-shadow:0 10px 30px rgba(42,50,76,.12);border:1px solid #EFE6C0;}
+    .pp-search-pill input{border:none;flex:1;padding:10px 18px;font-family:-apple-system,sans-serif;font-size:1rem;background:transparent;}
+    .pp-search-pill input:focus{outline:none;}
+    .pp-search-pill button{border:none;background:var(--pp-green);color:#fff;border-radius:50px;padding:0 26px;font-weight:700;}
+    .pp-search-pill button:hover{background:var(--pp-green-dark);}
+
+    .pp-chips{display:flex;justify-content:center;gap:10px;margin-top:24px;flex-wrap:wrap;}
     .pp-chip{background:#fff;border:2px solid var(--pp-navy);border-radius:20px;padding:6px 16px;font-weight:700;font-size:.85rem;color:var(--pp-navy);text-decoration:none;}
     .pp-chip.on{background:var(--pp-green);color:#fff;border-color:var(--pp-green);}
 
@@ -51,16 +64,17 @@
 <div class="pp-hero text-center">
     <div class="pp-blob pp-b1"></div>
     <div class="pp-blob pp-b2"></div>
-    <div class="container position-relative pp-baloo">
-        <h1>Belanja <span>Kebutuhan</span> Si Kucing</h1>
-        <p style="font-family:-apple-system,sans-serif;">Produk berkualitas untuk sahabat berbulu kesayanganmu.</p>
+    <div class="container position-relative">
+        <span class="pp-label-tag">🛍️ Katalog Produk</span>
+        <h1>Belanja <span>Kebutuhan</span><br>Si Kucing</h1>
+        <p>Produk berkualitas untuk sahabat berbulu kesayanganmu, siap dikirim sampai depan pintu.</p>
 
         <form method="GET" action="{{ route('products.index') }}">
             @foreach (request()->except(['search', 'page']) as $key => $value)
                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
             @endforeach
-            <div class="pp-search">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk...">
+            <div class="pp-search-pill">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk lucu...">
                 <button type="submit"><i class="bi bi-search"></i></button>
             </div>
         </form>

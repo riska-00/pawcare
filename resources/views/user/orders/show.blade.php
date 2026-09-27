@@ -5,12 +5,13 @@
 @section('styles')
 <style>
     :root{ --od-green:#128965; --od-green-dark:#0e6e51; --od-yellow:#FFD85C; --od-navy:#2A324C; --od-coral:#EC5D5D; --od-cream:#FFFAE8; }
-    .od-back{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--od-navy);text-decoration:none;margin-bottom:20px;}
+    .od-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+    .od-back{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--od-navy);text-decoration:none;}
     .od-back:hover{color:var(--od-green);}
 
     .od-panel{background:#fff;border-radius:20px;border:1px solid #EFE6C0;padding:28px;margin-bottom:20px;}
     .od-panel-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
-    .od-code{font-family:'Baloo 2',sans-serif;font-weight:800;color:var(--od-navy);font-size:1.2rem;}
+    .od-code{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--od-navy);font-size:1.2rem;}
     .od-status{font-weight:700;font-size:.78rem;padding:6px 16px;border-radius:20px;}
     .od-status.pending{background:var(--od-yellow);color:var(--od-navy);}
     .od-status.paid{background:#DCF4EA;color:var(--od-green);}
@@ -20,22 +21,22 @@
     .od-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
     .od-info-item{background:var(--od-cream);border-radius:12px;padding:12px 16px;}
     .od-info-label{font-size:.72rem;color:#707378;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
-    .od-info-value{font-weight:700;color:var(--od-navy);font-size:.9rem;}
+    .od-info-value{font-weight:600;color:var(--od-navy);font-size:.9rem;}
 
-    .od-section-title{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--od-navy);font-size:1.05rem;margin-bottom:14px;}
+    .od-section-title{font-family:'Baloo 2',sans-serif;font-weight:600;color:var(--od-navy);font-size:1.05rem;margin-bottom:14px;}
     .od-prod-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #EFE6C0;font-size:.9rem;}
     .od-prod-row:last-child{border-bottom:none;}
-    .od-prod-name{color:var(--od-navy);font-weight:600;}
+    .od-prod-name{color:var(--od-navy);font-weight:500;}
     .od-prod-qty{color:#707378;font-size:.8rem;}
     .od-prod-sub{font-weight:700;color:var(--od-green);}
     .od-total-row{display:flex;justify-content:space-between;align-items:center;padding-top:14px;margin-top:6px;border-top:2px solid var(--od-navy);}
-    .od-total-label{font-weight:700;color:var(--od-navy);}
+    .od-total-label{font-weight:600;color:var(--od-navy);}
     .od-total-value{font-weight:800;color:var(--od-green);font-size:1.2rem;}
 
     .od-side-card{background:#fff;border-radius:16px;border:1px solid #EFE6C0;padding:20px;margin-bottom:14px;display:block;text-decoration:none;transition:box-shadow .15s ease, transform .15s ease;}
     .od-side-card.clickable{cursor:pointer;}
     .od-side-card.clickable:hover{box-shadow:0 8px 20px rgba(42,50,76,.1);transform:translateY(-2px);}
-    .od-side-title{font-weight:700;color:var(--od-navy);font-size:.9rem;margin-bottom:10px;}
+    .od-side-title{font-weight:600;color:var(--od-navy);font-size:.9rem;margin-bottom:10px;}
     .od-side-empty{color:#707378;font-size:.85rem;margin-bottom:0;}
 
     .od-side-link{font-size:.82rem;font-weight:600;color:var(--od-green);text-decoration:none;}
@@ -47,11 +48,12 @@
 
 <div class="container pt-3 pb-4">
 
-    <h3 class="fw-bold mb-2" style="color: #2A324C;">Detail Pesanan</h3>
-
-    <a href="{{ route('orders.index') }}" class="od-back">
-        <i class="bi bi-arrow-left"></i> Kembali ke Pesanan Saya
-    </a>
+    <div class="od-header">
+    <h3 class="fw-semibold mb-0" style="color: #2A324C;">Detail Pesanan</h3>
+        <a href="{{ route('orders.index') }}" class="od-back">
+            <i class="bi bi-arrow-left"></i> Kembali ke Pesanan Saya
+        </a>
+    </div>
 
     <div class="row g-4">
         <div class="col-md-8">

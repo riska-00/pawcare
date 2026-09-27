@@ -14,6 +14,20 @@
     <style>
         body {
             background-color: #FFFAE8;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        main {
+            flex: 1;
         }
 
         .navbar {
