@@ -1,158 +1,791 @@
+
 @extends('layouts.app')
 
 @section('title', 'Tentang Kami - PawCare')
 
 @section('styles')
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-    :root{ --ab-green:#128965; --ab-green-dark:#0e6e51; --ab-yellow:#FFD85C; --ab-navy:#2A324C; --ab-coral:#EC5D5D; --ab-cream:#FFFAE8; }
-    .ab-baloo{ font-family:'Baloo 2',sans-serif; }
-
-    /* Hero — samain gaya sama home & katalog kucing */
-    .ab-hero{ position:relative; padding:60px 0 70px; overflow:hidden;
-        background: radial-gradient(circle at 12% 18%, rgba(18,137,101,.16) 0%, transparent 35%),
-                    radial-gradient(circle at 88% 12%, rgba(255,216,92,.35) 0%, transparent 32%),
-                    radial-gradient(circle at 90% 85%, rgba(236,93,93,.14) 0%, transparent 30%),
-                    var(--ab-cream);
+    :root {
+        --ab-green: #128965;
+        --ab-green-dark: #0e6e51;
+        --ab-yellow: #FFD85C;
+        --ab-navy: #2A324C;
+        --ab-coral: #EC5D5D;
+        --ab-cream: #FFFAE8;
+        --ab-border: #EFE6C0;
     }
-    .ab-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(to bottom, transparent, var(--ab-cream));}
-    .ab-blob{position:absolute;border-radius:50%;opacity:.55;}
-    .ab-b1{width:150px;height:150px;background:var(--ab-yellow);top:10px;left:6%;}
-    .ab-b2{width:100px;height:100px;background:var(--ab-green);opacity:.18;bottom:10px;right:10%;}
-    .ab-label-tag{display:inline-block;padding:4px 14px;border-radius:20px;background:#fff;border:2px solid var(--ab-navy);font-weight:700;font-size:.72rem;margin-bottom:14px;color:var(--ab-navy);}
-    .ab-hero h1{font-size:2.6rem;font-weight:800;color:var(--ab-navy);}
-    .ab-hero h1 span{color:var(--ab-green);}
-    .ab-hero p{color:#5b5f6b;font-size:1.02rem;max-width:480px;margin:0 auto 28px;font-family:-apple-system,sans-serif;}
 
-    /* Timeline */
-    .ab-tl{max-width:560px;margin:0 auto;}
-    .ab-tl-row{display:flex;gap:18px;}
-    .ab-tl-dot-col{width:16px;display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
-    .ab-tl-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
-    .ab-tl-line{width:2px;flex:1;background:#DCD3B2;min-height:50px;}
-    .ab-tl-card{background:#fff;border:1px solid #EFE6C0;border-radius:16px;padding:18px 20px;margin-bottom:18px;flex:1;}
-    .ab-tl-card h4{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--ab-navy);font-size:1rem;margin-bottom:6px;}
-    .ab-tl-card p{margin:0;font-size:.88rem;color:#5b5f6b;line-height:1.6;}
+    .about-page {
+        background: var(--ab-cream);
+        color: var(--ab-navy);
+        overflow: hidden;
+    }
 
-    .ab-section-title{font-family:'Baloo 2',sans-serif;font-weight:800;color:var(--ab-navy);text-align:center;margin-bottom:8px;}
-    .ab-section-sub{text-align:center;color:#707378;font-size:.9rem;margin-bottom:32px;}
+    .ab-baloo {
+        font-family: 'Baloo 2', sans-serif;
+    }
 
-    .ab-value-card{background:#fff;border:1px solid #EFE6C0;border-radius:16px;padding:24px;height:100%;text-align:center;}
-    .ab-value-card i{font-size:1.8rem;color:var(--ab-green);margin-bottom:12px;}
-    .ab-value-title{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--ab-navy);font-size:1rem;margin-bottom:6px;}
-    .ab-value-desc{color:#707378;font-size:.85rem;line-height:1.5;}
+    
+    /* HERO TENTANG KAMI */
+    .ab-hero {
+        position: relative;
+        min-height: 330px;
+        background: linear-gradient(135deg, #FFFAE8, #FFF3C8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+        padding: 55px 20px 85px;
+    }
 
-    .ab-stat-strip{display:flex;justify-content:center;background:#fff;border-radius:20px;overflow:hidden;border:1px solid #EFE6C0;}
-    .ab-stat-item{flex:1;text-align:center;padding:28px 16px;border-right:1px solid #EFE6C0;}
-    .ab-stat-item:last-child{border-right:none;}
-    .ab-stat-num{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.9rem;color:var(--ab-green);}
-    .ab-stat-label{font-size:.82rem;color:#707378;}
+    .ab-hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 750px;
+        margin: auto;
+    }
 
-    .ab-cta{background:var(--ab-green);border-radius:20px;padding:40px;text-align:center;color:#fff;position:relative;overflow:hidden;}
-    .ab-cta::before{content:"";position:absolute;width:180px;height:180px;background:rgba(255,255,255,.08);border-radius:50%;top:-50px;right:-50px;}
-    .ab-cta h3{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:10px;}
-    .ab-cta p{color:#DCF4EA;max-width:440px;margin:0 auto 22px;font-size:.92rem;}
-    .ab-cta-btn{background:var(--ab-yellow);color:var(--ab-navy);padding:11px 28px;border-radius:30px;font-weight:700;text-decoration:none;display:inline-block;font-size:.9rem;}
+    .ab-hero-label {
+        display: inline-block;
+        background: #FFE49A;
+        color: #0e6e51;
+        padding: 7px 20px;
+        border-radius: 30px;
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
 
-    .ab-hero-stats{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
-    .ab-hero-stat{background:#fff;border:2px solid var(--ab-navy);border-radius:16px;padding:10px 18px;display:flex;align-items:center;gap:8px;}
-    .ab-hero-stat b{font-family:'Baloo 2',sans-serif;color:var(--ab-green);font-size:1rem;}
-    .ab-hero-stat span{font-size:.78rem;color:var(--ab-navy);font-weight:600;}
+    .ab-hero h1 {
+        font-family: 'Baloo 2', sans-serif;
+        color: #128965;
+        font-size: clamp(2.5rem, 5vw, 3.7rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin: 0 0 16px;
+    }
+
+    .ab-hero h1 span {
+        color: #174F3C;
+    }
+
+    .ab-hero p {
+        font-size: 1rem;
+        color: #626879;
+        margin: 0;
+    }
+
+    /* DEKORASI */
+    .ab-paw {
+        position: absolute;
+        color: #F3BD45;
+        opacity: .85;
+        z-index: 1;
+    }
+
+    .ab-paw-left {
+        top: 65px;
+        left: 19%;
+        transform: rotate(-20deg);
+    }
+
+    .ab-paw-right {
+        top: 70px;
+        right: 15%;
+        transform: rotate(25deg);
+    }
+
+    .ab-paw-small {
+        bottom: 95px;
+        right: 25%;
+        transform: rotate(-15deg);
+    }
+
+    /* GELOMBANG */
+    .ab-hero-wave {
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 95px;
+        z-index: 1;
+    }
+
+    .ab-hero-wave svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+        .ab-intro-grid {
+            grid-template-columns: 1fr;
+            gap: 35px;
+        }
+
+        .ab-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 576px) {
+        .ab-section,
+        .ab-cta-section {
+            padding: 45px 0;
+        }
+
+        .ab-benefits {
+            padding: 50px 0;
+        }
+
+        .ab-benefits-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ab-facts {
+            padding: 24px;
+        }
+
+        .ab-cta {
+            padding: 40px 20px;
+        }
+    }
+
+    /* INTRO */
+    .ab-section {
+        padding: 75px 0;
+    }
+
+    .ab-section-label {
+        display: inline-block;
+        color: var(--ab-green);
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .ab-section-title {
+        font-family: 'Baloo 2', sans-serif;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        font-weight: 800;
+        line-height: 1.25;
+        color: var(--ab-navy);
+        margin-bottom: 20px;
+    }
+
+    .ab-section-title span {
+        color: var(--ab-green);
+    }
+
+    .ab-intro-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 65px;
+        align-items: center;
+    }
+
+    .ab-intro-text p {
+        color: #626879;
+        font-size: .96rem;
+        line-height: 1.95;
+        margin-bottom: 18px;
+    }
+
+    .ab-intro-highlight {
+        border-left: 4px solid var(--ab-yellow);
+        padding: 12px 20px;
+        margin-top: 25px;
+        background: #FFF3C8;
+        border-radius: 0 12px 12px 0;
+        color: var(--ab-navy);
+        font-weight: 600;
+        line-height: 1.8;
+    }
+
+    /* FAKTA */
+    .ab-facts {
+        background: #FFFFFF;
+        border: 1px solid var(--ab-border);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 12px 35px rgba(42, 50, 76, .05);
+    }
+
+    .ab-facts-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .ab-facts-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 15px;
+        background: #E4F6ED;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+    }
+
+    .ab-facts h3 {
+        font-family: 'Baloo 2', sans-serif;
+        font-weight: 800;
+        font-size: 1.4rem;
+        margin: 0;
+    }
+
+    .ab-facts-header p {
+        color: #888C98;
+        font-size: .8rem;
+        margin: 0;
+    }
+
+    .ab-fact-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 17px 0;
+        border-bottom: 1px dashed var(--ab-border);
+        font-size: .92rem;
+        gap: 12px;
+    }
+
+    .ab-fact-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .ab-fact-row strong {
+        color: var(--ab-green);
+        font-family: 'Baloo 2', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+    /* KEUNGGULAN */
+    .ab-benefits {
+        background: #FFF4D1;
+        padding: 70px 0;
+    }
+
+    .ab-center {
+        text-align: center;
+    }
+
+    
+    .ab-benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 30px;
+    }
+
+    .ab-benefit-card {
+        background: #fff;
+        border: 1px solid #EFE6C0;
+        border-radius: 16px;
+        padding: 20px 15px;
+        text-align: center;
+    }
+
+    .ab-benefit-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 15px;
+        margin: 0 auto 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+    }
+
+    .ab-benefit-card h4 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .ab-benefit-card p {
+        font-size: .82rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    @media (max-width: 992px) {
+        .ab-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .ab-benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(42, 50, 76, .08);
+    }
+
+    .ab-benefit-icon {
+        width: 68px;
+        height: 68px;
+        border-radius: 20px;
+        background: #E9F7EE;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+    }
+
+    .ab-benefit-card:nth-child(2) .ab-benefit-icon {
+        background: #FFF2CA;
+    }
+
+    .ab-benefit-card:nth-child(3) .ab-benefit-icon {
+        background: #FFE8DB;
+    }
+
+    .ab-benefit-card:nth-child(4) .ab-benefit-icon {
+        background: #E8F1FF;
+    }
+
+    .ab-benefit-card h4 {
+        font-family: 'Baloo 2', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .ab-benefit-card p {
+        font-size: .85rem;
+        line-height: 1.8;
+        color: #777D89;
+        margin: 0;
+    }
+
+    /* CTA */
+    .ab-cta-section {
+        padding: 75px 0;
+    }
+
+    .ab-cta {
+        background: var(--ab-green);
+        border-radius: 28px;
+        padding: 55px 30px;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ab-cta::before,
+    .ab-cta::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .06);
+        pointer-events: none;
+    }
+
+    .ab-cta::before {
+        top: -110px;
+        left: -80px;
+    }
+
+    .ab-cta::after {
+        bottom: -140px;
+        right: -50px;
+    }
+
+    .ab-cta-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .ab-cta h2 {
+        font-family: 'Baloo 2', sans-serif;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .ab-cta p {
+        max-width: 520px;
+        margin: 0 auto 28px;
+        color: #E1F7ED;
+        line-height: 1.8;
+        font-size: .95rem;
+    }
+
+    .ab-cta-actions {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .ab-btn {
+        display: inline-block;
+        padding: 13px 30px;
+        border-radius: 30px;
+        font-weight: 800;
+        text-decoration: none;
+        font-size: .9rem;
+        transition: transform .2s;
+    }
+
+    .ab-btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .ab-btn-yellow {
+        background: var(--ab-yellow);
+        color: var(--ab-navy);
+    }
+
+    .ab-btn-outline {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, .8);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+        .ab-intro-grid {
+            grid-template-columns: 1fr;
+            gap: 35px;
+        }
+
+        .ab-benefits-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+        .ab-paw {
+        position: absolute;
+        color: #F3BD45;
+        font-size: 2rem;
+        opacity: .85;
+        z-index: 1;
+    }
+
+        .ab-section,
+        .ab-cta-section {
+            padding: 45px 0;
+    }
+
+        .ab-benefits {
+            padding: 50px 0;
+    }
+
+        .ab-benefits-grid {
+            grid-template-columns: 1fr;
+    }
+
+        .ab-facts {
+            padding: 24px;
+    }
+
+        .ab-cta {
+            padding: 40px 20px;
+    }
+
 </style>
 @endsection
 
 @section('content')
 
-<div class="ab-hero text-center">
-    <div class="ab-blob ab-b1"></div><div class="ab-blob ab-b2"></div>
-    <div class="container position-relative">
-        <span class="ab-label-tag">🐾 Tentang Kami</span>
-        <h1 class="ab-baloo">Kenalan Lebih Dekat<br>dengan <span>PawCare</span></h1>
-        <p>Cerita di balik dedikasi kami untuk kucing dan pemiliknya.</p>
-        <div class="ab-hero-stats">
-            <div class="ab-hero-stat"><b>100+</b><span>Kucing Terawat</span></div>
-            <div class="ab-hero-stat"><b>500+</b><span>Pelanggan Puas</span></div>
-            <div class="ab-hero-stat"><b>24/7</b><span>Reservasi</span></div>
-        </div>
-    </div>
-</div>
+<div class="about-page">
 
-<div class="container py-5">
+    <!-- HERO TENTANG KAMI -->
+    <section class="ab-hero">
 
-    {{-- TIMELINE CERITA --}}
-    <div class="ab-tl mb-5">
-        <div class="ab-tl-row">
-            <div class="ab-tl-dot-col"><div class="ab-tl-dot" style="background:var(--ab-green)"></div><div class="ab-tl-line"></div></div>
-            <div class="ab-tl-card">
-                <h4>🐾 Awal Mula</h4>
-                <p>PawCare berdiri dari kecintaan pada kucing dan keinginan memberi setiap kucing rumah yang penuh kasih sayang.</p>
-            </div>
+        <!-- Dekorasi jejak kaki -->
+        <div class="ab-paw ab-paw-left">
+            🐾
         </div>
-        <div class="ab-tl-row">
-            <div class="ab-tl-dot-col"><div class="ab-tl-dot" style="background:var(--ab-yellow)"></div><div class="ab-tl-line"></div></div>
-            <div class="ab-tl-card">
-                <h4>💚 Misi Kami</h4>
-                <p>Menghadirkan kucing sehat dan terawat, produk berkualitas untuk kebutuhan harian, serta layanan reservasi dan pembelian yang mudah, lengkap dengan pembayaran COD yang praktis.</p>
-            </div>
-        </div>
-        <div class="ab-tl-row">
-            <div class="ab-tl-dot-col"><div class="ab-tl-dot" style="background:var(--ab-green)"></div></div>
-            <div class="ab-tl-card" style="margin-bottom:0;">
-                <h4>🏆 PawCare Sekarang</h4>
-                <p>100+ kucing terawat, 500+ pelanggan puas, dan reservasi online yang bisa dilakukan kapan saja.</p>
-            </div>
-        </div>
-    </div>
 
-    {{-- NILAI KAMI --}}
-    <div class="ab-section-title">Kenapa Memilih Kami?</div>
-    <div class="ab-section-sub">Komitmen kami dalam setiap layanan</div>
-    <div class="row g-3 mb-5">
-        <div class="col-md-3 col-6">
-            <div class="ab-value-card">
-                <i class="bi bi-shield-check"></i>
-                <div class="ab-value-title ab-baloo">Kucing Sehat</div>
-                <div class="ab-value-desc">Dirawat dengan baik sebelum sampai ke tangan Anda</div>
-            </div>
+        <div class="ab-paw ab-paw-right">
+            🐾
         </div>
-        <div class="col-md-3 col-6">
-            <div class="ab-value-card">
-                <i class="bi bi-star"></i>
-                <div class="ab-value-title ab-baloo">Kualitas Terbaik</div>
-                <div class="ab-value-desc">Produk pilihan untuk kebutuhan si kucing</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="ab-value-card">
-                <i class="bi bi-truck"></i>
-                <div class="ab-value-title ab-baloo">Bayar di Tempat</div>
-                <div class="ab-value-desc">Transaksi COD yang aman dan praktis</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="ab-value-card">
-                <i class="bi bi-clock"></i>
-                <div class="ab-value-title ab-baloo">Reservasi Online</div>
-                <div class="ab-value-desc">Kapan saja, tanpa perlu antre</div>
-            </div>
-        </div>
-    </div>
 
-    {{-- STATISTIK --}}
-    <div class="ab-stat-strip mb-5">
-        <div class="ab-stat-item"><div class="ab-stat-num">100+</div><div class="ab-stat-label">Kucing Terawat</div></div>
-        <div class="ab-stat-item"><div class="ab-stat-num">500+</div><div class="ab-stat-label">Pelanggan Puas</div></div>
-        <div class="ab-stat-item"><div class="ab-stat-num">24/7</div><div class="ab-stat-label">Reservasi Online</div></div>
-    </div>
-
-    {{-- CTA --}}
-    <div class="ab-cta ab-baloo">
-        <h3>Siap Menemukan Sahabat Barumu?</h3>
-        <p style="font-family:-apple-system,sans-serif;">Jelajahi koleksi kucing dan produk kami sekarang.</p>
-        <div class="d-flex gap-2 justify-content-center flex-wrap">
-            <a href="{{ route('cats.index') }}" class="ab-cta-btn">Lihat Kucing</a>
+        <div class="ab-paw ab-paw-small">
+            🐾
         </div>
-    </div>
+
+        <!-- Konten hero -->
+        <div class="ab-hero-content">
+
+            <span class="ab-hero-label">
+                TENTANG KAMI
+            </span>
+
+            <h1>
+                Kenali PawCare<br>
+                <span>Lebih Dekat</span>
+            </h1>
+
+            <p>
+                Rumah penuh kasih untuk sahabat berbulu Anda.
+            </p>
+
+        </div>
+
+        <!-- Gelombang dekoratif -->
+        <div class="ab-hero-wave">
+            <svg
+                viewBox="0 0 1440 100"
+                preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+            >
+                <!-- Gelombang kuning -->
+                <path
+                    d="M0,45 C220,5 300,110 540,65
+                    C780,20 880,110 1100,45
+                    C1250,0 1350,50 1440,35
+                    L1440,100 L0,100 Z"
+                    fill="#FFE49A"
+                />
+
+                <!-- Gelombang hijau kiri dan kanan -->
+                <path
+                    d="M0,30 C100,20 160,45 240,75
+                    L0,100 Z"
+                    fill="#128965"
+                />
+
+                <path
+                    d="M1100,65 C1240,10 1330,20 1440,40
+                    L1440,100 Z"
+                    fill="#128965"
+                />
+
+                <!-- Transisi ke bagian konten -->
+                <path
+                    d="M0,75 C220,115 350,65 540,82
+                    C750,100 850,65 1050,78
+                    C1250,95 1350,65 1440,80
+                    L1440,100 L0,100 Z"
+                    fill="#FFFAE8"
+                />
+            </svg>
+        </div>
+
+    </section>
+
+    <!-- TENTANG KAMI -->
+    <section class="ab-section">
+        <div class="container">
+
+            <div class="ab-intro-grid">
+
+                <div class="ab-intro-text">
+
+                    <span class="ab-section-label">
+                        CERITA KAMI
+                    </span>
+
+                    <h2 class="ab-section-title">
+                        Karena Setiap Kucing
+                        <span>Berhak Disayangi.</span>
+                    </h2>
+
+                    <p>
+                        PawCare Cat Care Center hadir sebagai
+                        tempat yang membantu Anda menemukan
+                        sahabat berbulu sekaligus memenuhi
+                        berbagai kebutuhan kucing kesayangan.
+                        Kami percaya bahwa setiap kucing
+                        berhak mendapatkan rumah yang penuh
+                        kasih sayang dan perawatan terbaik.
+                    </p>
+
+                    <p>
+                        Kami menyediakan kucing-kucing yang
+                        terawat dengan baik serta beragam
+                        produk berkualitas untuk kebutuhan
+                        sehari-hari. Melalui sistem reservasi
+                        dan pembelian online yang mudah,
+                        dilengkapi pembayaran COD, kami
+                        berkomitmen memberikan pengalaman
+                        yang nyaman dan praktis bagi
+                        setiap pelanggan.
+                    </p>
+
+                </div>
+
+                <div class="ab-facts">
+
+                    <div class="ab-facts-header">
+
+                        <div class="ab-facts-icon">
+                            🐾
+                        </div>
+
+                        <div>
+                            <h3>Sekilas PawCare</h3>
+                            <p>
+                                Lebih dekat dengan layanan kami
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="ab-fact-row">
+                        <span>🐱 Kucing Terawat</span>
+                        <strong>100+</strong>
+                    </div>
+
+                    <div class="ab-fact-row">
+                        <span>💚 Pelanggan Puas</span>
+                        <strong>500+</strong>
+                    </div>
+
+                    <div class="ab-fact-row">
+                        <span>📅 Reservasi Online</span>
+                        <strong>24/7</strong>
+                    </div>
+
+                    <div class="ab-fact-row">
+                        <span>🚚 Metode Pembayaran</span>
+                        <strong>COD</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- KEUNGGULAN -->
+    <section class="ab-benefits">
+        <div class="container">
+
+            <div class="ab-center">
+
+                <span class="ab-section-label">
+                    MENGAPA PAWCARE?
+                </span>
+
+                <h2 class="ab-section-title">
+                    Yang Terbaik untuk
+                    <span>Sahabat Berbulu</span>
+                </h2>
+
+            </div>
+
+            <div class="ab-benefits-grid">
+
+                <div class="ab-benefit-card">
+                    <div class="ab-benefit-icon">
+                        🛡️
+                    </div>
+
+                    <h4>Kucing Terawat</h4>
+
+                    <p>
+                        Kucing mendapatkan perhatian
+                        dan perawatan yang baik.
+                    </p>
+                </div>
+
+                <div class="ab-benefit-card">
+                    <div class="ab-benefit-icon">
+                        ⭐
+                    </div>
+
+                    <h4>Produk Berkualitas</h4>
+
+                    <p>
+                        Beragam produk pilihan untuk
+                        memenuhi kebutuhan kucing Anda.
+                    </p>
+                </div>
+
+                <div class="ab-benefit-card">
+                    <div class="ab-benefit-icon">
+                        🚚
+                    </div>
+
+                    <h4>Pembayaran Praktis</h4>
+
+                    <p>
+                        Nikmati kemudahan berbelanja
+                        dengan metode pembayaran COD.
+                    </p>
+                </div>
+
+                <div class="ab-benefit-card">
+                    <div class="ab-benefit-icon">
+                        📅
+                    </div>
+
+                    <h4>Reservasi Online</h4>
+
+                    <p>
+                        Temukan dan reservasi kucing
+                        pilihan Anda dengan mudah.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="ab-cta-section">
+        <div class="container">
+
+            <div class="ab-cta">
+
+                <div class="ab-cta-content">
+
+                    <h2>
+                        Siap Menemukan Sahabat Barumu?
+                    </h2>
+
+                    <p>
+                        Temukan kucing yang tepat untuk
+                        menjadi bagian dari keluarga Anda
+                        dan lengkapi kebutuhannya bersama
+                        PawCare.
+                    </p>
+
+                    <div class="ab-cta-actions">
+
+                        <a
+                            href="{{ route('cats.index') }}"
+                            class="ab-btn ab-btn-yellow"
+                        >
+                            Jelajahi Kucing
+                        </a>
+
+                        <a
+                            href="{{ route('products.index') }}"
+                            class="ab-btn ab-btn-outline"
+                        >
+                            Lihat Produk
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
 
 </div>
 
