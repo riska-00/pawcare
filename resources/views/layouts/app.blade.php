@@ -194,6 +194,37 @@
             background-color: #0e6e51;
             color: #fff;
         }
+
+        .dropdown-menu {
+            border: 1px solid #EFE6C0;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(42, 50, 76, .12);
+            padding: 8px;
+            margin-top: 10px !important;
+        }
+
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: .9rem;
+            color: #2A324C;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover, .dropdown-item:focus {
+            background-color: #DCF4EA;
+            color: #128965;
+        }
+
+        .dropdown-item.text-danger:hover, .dropdown-item.text-danger:focus {
+            background-color: #FCE2E2;
+            color: #EC5D5D;
+        }
+
+        .dropdown-divider {
+            border-color: #EFE6C0;
+            margin: 6px 4px;
+        }
     </style>
 
     @yield('styles')

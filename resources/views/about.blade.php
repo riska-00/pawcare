@@ -34,33 +34,30 @@
 
     
     
-    /* HERO TENTANG KAMI */
     .ab-hero {
         position: relative;
         min-height: 410px;
         padding: 55px 24px;
-        background: linear-gradient(
-            115deg,
-            #EAF5E5 0%,
-            #FFFAE8 55%,
-            #FFF0D6 100%
-        );
+        background: linear-gradient(to bottom, transparent 82%, var(--ab-cream) 100%),
+                    radial-gradient(circle at 12% 18%, rgba(18,137,101,.16) 0%, transparent 35%),
+                    radial-gradient(circle at 88% 12%, rgba(255,216,92,.35) 0%, transparent 32%),
+                    radial-gradient(circle at 90% 85%, rgba(236,93,93,.14) 0%, transparent 30%),
+                    var(--ab-cream);
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
         overflow: hidden;
     }
-
-    /* Dekorasi lingkaran */
     .ab-hero::before {
         content: "";
         position: absolute;
-        width: 145px;
-        height: 145px;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
-        background: #F8E59B;
-        top: 30px;
+        background: var(--ab-yellow);
+        opacity: .55;
+        top: 10px;
         left: 6%;
     }
 
@@ -70,8 +67,9 @@
         width: 100px;
         height: 100px;
         border-radius: 50%;
-        background: rgba(18, 137, 101, .13);
-        bottom: 25px;
+        background: var(--ab-green);
+        opacity: .18;
+        bottom: 10px;
         right: 10%;
     }
 
@@ -118,7 +116,7 @@
     .ab-hero p {
         font-size: .98rem;
         line-height: 1.7;
-        color: #626879;
+        color:  #5b5f6b;
         max-width: 600px;
         margin: 0 auto 25px;
     }
