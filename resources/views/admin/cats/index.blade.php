@@ -92,6 +92,10 @@
                     </table>
                 </div>
             </div>
+
+            <div class="mt-4">
+                {{ $cats->links() }}
+            </div>
         </div>
 
         <form id="form-destroy" method="POST" style="display: none;">

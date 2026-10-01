@@ -29,7 +29,7 @@ class ProductController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        $products = $query->paginate(8);
+        $products = $query->paginate(8)->withQueryString();
 
         $categories = Product::select('category')->distinct()->pluck('category');
 
