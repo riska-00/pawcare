@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('visit_date');
             $table->text('notes')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'paid', 'completed', 'cancelled', 'expired'])->default('pending');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }

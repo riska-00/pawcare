@@ -61,10 +61,28 @@
 
             {{-- LAPORAN PENJUALAN --}}
             @if ($type === 'penjualan')
-                <div class="alert alert-light border mb-3">
-                    <strong>Total Penjualan:</strong> Rp {{ number_format($totalPenjualan, 0, ',', '.') }}
-                    ({{ $data->count() }} pesanan selesai)
+                <div class="row g-3 mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="p-3 rounded" style="background-color: #DCF4EA;">
+                        <div class="fs-4 fw-bold" style="color: #2A324C;">Rp {{ number_format($totalPenjualan, 0, ',', '.') }}</div>
+                        <div class="small" style="color: #707378;">Total Penjualan</div>
+                    </div>
                 </div>
+                <div class="col-6 col-md-4">
+                    <div class="p-3 rounded" style="background-color: #FFEBA6;">
+                        <div class="fs-4 fw-bold" style="color: #2A324C;">Rp {{ number_format($totalProduk, 0, ',', '.') }}</div>
+                        <div class="small" style="color: #707378;">Penjualan Produk ({{ $data->count() }} pesanan)</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="p-3 rounded" style="background-color: #E1EFFC;">
+                        <div class="fs-4 fw-bold" style="color: #2A324C;">Rp {{ number_format($totalKucing, 0, ',', '.') }}</div>
+                        <div class="small" style="color: #707378;">Penjualan Kucing ({{ $dataKucing->count() }} kucing)</div>
+                    </div>
+                </div>
+            </div>
+
+                <h6 class="fw-bold mb-3" style="color: #2A324C;">Penjualan Produk</h6>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -83,6 +101,31 @@
                                 </tr>
                             @empty
                                 <tr><td colspan="5" class="text-center text-muted py-4">Belum ada penjualan pada periode ini.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <h6 class="fw-bold mt-4 mb-3" style="color: #2A324C;">Penjualan Kucing</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th><th>Kode</th><th>Kucing</th><th>Pemesan</th><th>Tanggal Selesai</th><th>Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($dataKucing as $reservation)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $reservation->kode_reservasi }}</td>
+                                    <td>{{ $reservation->cat->name }}</td>
+                                    <td>{{ $reservation->user->name ?? '-' }}</td>
+                                    <td>{{ $reservation->completed_at ? $reservation->completed_at->format('d M Y') : '-' }}</td>
+                                    <td>Rp {{ number_format($reservation->cat->price, 0, ',', '.') }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="6" class="text-center text-muted py-4">Belum ada penjualan kucing pada periode ini.</td></tr>
                             @endforelse
                         </tbody>
                     </table>

@@ -102,6 +102,7 @@ class CatReservationController extends Controller
 
         $catReservation->update([
             'status' => $request->status,
+            'completed_at' => $request->status === 'completed' ? ($catReservation->completed_at ?? now()) : null,
         ]);
 
         if (in_array($request->status, ['cancelled', 'expired'])) {

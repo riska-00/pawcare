@@ -12,11 +12,15 @@ class CatReservation extends Model
         'visit_date',
         'notes',
         'status',
+        'completed_at'
     ];
 
     protected function casts(): array
     {
-        return ['visit_date' => 'date'];
+        return [
+            'visit_date' => 'date',
+            'completed_at' => 'datetime',      
+        ];
     }
 
     public function getKodeReservasiAttribute()
