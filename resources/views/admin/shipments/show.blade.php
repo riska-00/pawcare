@@ -68,21 +68,39 @@
         <div class="col-md-5">
             <div class="card border-0 shadow-sm p-4">
                 <h6 class="fw-bold mb-3" style="color: #2A324C;">Ubah Status</h6>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Periksa kembali data pengiriman.</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-                <form action="{{ route('admin.shipments.update', $shipment->id) }}" method="POST">
+                    <form action="{{ route('admin.shipments.update', $shipment->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="mb-3">
                         <label class="form-label small">Status</label>
                         <select name="status" id="status-select" class="form-select" onchange="toggleShippedFields()">
-                            <option value="pending" {{ $shipment->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="shipped" {{ $shipment->status === 'shipped' ? 'selected' : '' }}>Shipped</option>
-                            <option value="delivered" {{ $shipment->status === 'delivered' ? 'selected' : '' }}>Delivered</option>
+                            <option value="pending" {{ old('status', $shipment->status) === 'pending' ? 'selected' : '' }}>
+                                Pending
+                            </option>
+
+                            <option value="shipped" {{ old('status', $shipment->status) === 'shipped' ? 'selected' : '' }}>
+                                Shipped
+                            </option>
+
+                            <option value="delivered" {{ old('status', $shipment->status) === 'delivered' ? 'selected' : '' }}>
+                                Delivered
+                            </option>
                         </select>
                     </div>
 
-                    <div id="shipped-fields" style="display: {{ $shipment->status === 'shipped' ? 'block' : 'none' }};">
+                    <div id="shipped-fields" style="display: {{ old('status', $shipment->status) === 'shipped' ? 'block' : 'none' }};">
                         <div class="mb-3">
                             <label class="form-label small">Kurir</label>
                             <input type="text" name="courier" value="{{ old('courier', $shipment->courier) }}"

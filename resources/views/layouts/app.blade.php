@@ -7,9 +7,12 @@
 
     <title>@yield('title', config('app.name', 'PawCare'))</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/baloo-2/500.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/baloo-2/600.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/baloo-2/700.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/baloo-2/800.css') }}">
 
     <style>
         body {
@@ -195,6 +198,28 @@
             color: #fff;
         }
 
+        .pc-btn, .pc-btn-outline {
+            text-decoration: none;
+        }
+
+        .pagination {
+            --bs-pagination-color: #128965;
+            --bs-pagination-bg: #FFFFFF;
+            --bs-pagination-border-color: #EFE6C0;
+            --bs-pagination-border-radius: 10px;
+            --bs-pagination-hover-color: #0e6e51;
+            --bs-pagination-hover-bg: #DCF4EA;
+            --bs-pagination-hover-border-color: #EFE6C0;
+            --bs-pagination-focus-color: #0e6e51;
+            --bs-pagination-focus-bg: #DCF4EA;
+            --bs-pagination-active-color: #FFFFFF;
+            --bs-pagination-active-bg: #128965;
+            --bs-pagination-active-border-color: #128965;
+            --bs-pagination-disabled-color: #707378;
+            --bs-pagination-disabled-bg: #FFFAE8;
+            --bs-pagination-disabled-border-color: #EFE6C0;
+        }
+
         .dropdown-menu {
             border: 1px solid #EFE6C0;
             border-radius: 14px;
@@ -338,8 +363,8 @@
         </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <script>
     function toggleFavorite(btn) {

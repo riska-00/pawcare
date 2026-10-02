@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -41,28 +43,83 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        $payment = Payment::with('order')->findOrFail($id);
+        $payment = Payment::with(['order.orderDetails.product', 'order.shipment'])
+            ->findOrFail($id);
 
         $request->validate([
             'status' => 'required|in:pending,confirmed,cancelled',
         ]);
 
-        if ($request->status === 'confirmed' && $payment->order->shipment->status !== 'delivered') {
-            return back()->with('error', 'Pembayaran tidak dapat dikonfirmasi sebelum pesanan diterima');
+        if (in_array($payment->status, ['confirmed', 'cancelled'])) {
+            return back()->with(
+                'error',
+                'Pembayaran yang sudah dikonfirmasi atau dibatalkan tidak dapat diubah lagi.'
+            );
         }
 
-        $payment->update([
-            'status' => $request->status,
-            'confirmed_by' => in_array($request->status, ['confirmed', 'cancelled']) ? Auth::id() : $payment->confirmed_by,
-            'paid_at' => $request->status === 'confirmed' ? now() : $payment->paid_at,
-        ]);
-
-        if ($request->status === 'confirmed') {
-            $payment->order->update(['status' => 'completed']);
-        } elseif ($request->status === 'cancelled') {
-            $payment->order->update(['status' => 'cancelled']);
+        if ($request->status === 'cancelled' && $payment->order->shipment->status === 'delivered') {
+            return back()->with('error', 'Pesanan yang sudah diterima tidak dapat dibatalkan.');
         }
 
-        return redirect()->route('admin.payments.index')->with('success', 'Status pembayaran berhasil diperbarui.');
+        if (
+            $request->status === 'confirmed' &&
+            $payment->order->shipment->status !== 'delivered'
+        ) {
+            return back()->with(
+                'error',
+                'Pembayaran tidak dapat dikonfirmasi sebelum pesanan diterima'
+            );
+        }
+
+        DB::beginTransaction();
+
+        try {
+            if ($request->status === 'cancelled' && $payment->status !== 'cancelled') {
+
+                foreach ($payment->order->orderDetails as $detail) {
+                    $product = Product::where('id', $detail->product_id)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if ($product) {
+                        $product->increment('stock', $detail->quantity);
+                    }
+                }
+
+                $payment->order->update([
+                    'status' => 'cancelled',
+                ]);
+            }
+
+            $payment->update([
+                'status' => $request->status,
+                'confirmed_by' => in_array($request->status, ['confirmed', 'cancelled'])
+                    ? Auth::id()
+                    : $payment->confirmed_by,
+                'paid_at' => $request->status === 'confirmed'
+                    ? now()
+                    : $payment->paid_at,
+            ]);
+
+            if ($request->status === 'confirmed') {
+                $payment->order->update([
+                    'status' => 'completed',
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.payments.index')
+                ->with('success', 'Status pembayaran berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with(
+                'error',
+                'Status pembayaran gagal diperbarui.'
+            );
+        }
     }
 }

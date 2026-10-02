@@ -52,7 +52,7 @@
                         <tbody>
                             @foreach ($cats as $cat)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $cats->firstItem() + $loop->index }}</td>
                                     <td>
                                         @if ($cat->photo)
                                             <img src="{{ asset('storage/' . $cat->photo) }}" alt="{{ $cat->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
@@ -93,7 +93,7 @@
                 </div>
             </div>
 
-            <div class="mt-4">
+            <div class="mt-3">
                 {{ $cats->links() }}
             </div>
         </div>

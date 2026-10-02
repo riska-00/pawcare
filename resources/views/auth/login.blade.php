@@ -46,10 +46,6 @@
         </div>
     </form>
 
-    <div class="text-center mt-3">
-        <a href="{{ route('password.request') }}">Lupa password?</a>
-    </div>
-
     <div class="text-center mt-2">
         Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a>
     </div>

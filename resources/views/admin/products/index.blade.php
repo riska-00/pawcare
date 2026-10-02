@@ -98,7 +98,7 @@
                         <tbody>
                             @foreach ($products as $product)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $products->firstItem() + $loop->index }}</td>
                                     <td>
                                         @if ($product->photo)
                                             <img src="{{ asset('storage/' . $product->photo) }}" alt="{{ $product->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
@@ -128,6 +128,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $products->links() }}
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -159,100 +163,6 @@
     @endpush
 
 @else
-
-    {{-- ================= TAMPILAN USER ================= --}}
-    <div class="pp-hero text-center">
-        <div class="pp-blob pp-b1"></div>
-        <div class="pp-blob pp-b2"></div>
-        <div class="container position-relative pp-baloo">
-        <h1>Belanja <span>Kebutuhan</span> Si Kucing</h1>
-            <p style="font-family:-apple-system,sans-serif;">Produk berkualitas untuk sahabat berbulu kesayanganmu.</p>
-
-            <form method="GET" action="{{ route('products.index') }}">
-                @foreach (request()->except(['search', 'page']) as $key => $value)
-                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                @endforeach
-                <div class="pp-search">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari produk...">
-                    <button type="submit"><i class="bi bi-search"></i></button>
-                </div>
-            </form>
-
-            <div class="pp-chips">
-                <a href="{{ route('products.index', array_merge(request()->except(['category', 'page']), ['category' => ''])) }}"
-                   class="pp-chip {{ request('category') ? '' : 'on' }}">Semua</a>
-                @foreach ($categories as $category)
-                    <a href="{{ route('products.index', array_merge(request()->except(['category', 'page']), ['category' => $category])) }}"
-                       class="pp-chip {{ request('category') === $category ? 'on' : '' }}">{{ $category }}</a>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    <div class="container pb-5">
-
-        <div class="pp-filter-bar">
-            <form method="GET" action="{{ route('products.index') }}" class="d-flex flex-wrap gap-2 align-items-center w-100">
-                <input type="hidden" name="search" value="{{ request('search') }}">
-
-                <select name="category">
-                    <option value="">Semua Kategori</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
-                    @endforeach
-                </select>
-
-                <input type="number" name="min_price" value="{{ request('min_price') }}" placeholder="Harga Min">
-                <input type="number" name="max_price" value="{{ request('max_price') }}" placeholder="Harga Max">
-
-                <button type="submit" class="ms-auto">Terapkan</button>
-            </form>
-        </div>
-
-        <div class="row g-3">
-            @forelse ($products as $product)
-                <div class="col-md-3 col-6">
-                    <div class="pp-card h-100">
-                        <div class="pp-img">
-                            @if ($product->photo)
-                                <img src="{{ asset('storage/' . $product->photo) }}" alt="{{ $product->name }}">
-                            @else
-                                <div class="d-flex align-items-center justify-content-center h-100">
-                                    <span class="text-muted small">Tidak ada foto</span>
-                                </div>
-                            @endif
-                            <button type="button" class="pp-fav" data-id="{{ $product->id }}" data-type="product"
-                                onclick="toggleFavorite(this)" title="Tambah ke wishlist">
-                                <i class="bi {{ $favoritedProductIds->contains($product->id) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                            </button>
-                        </div>
-                        <div class="pp-body">
-                            <div class="pp-cat">{{ $product->category }}</div>
-                            <div class="pp-name">{{ $product->name }}</div>
-                            <div class="pp-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                            @if ($product->stock > 0)
-                                <form action="{{ route('carts.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="pp-btn">+ Keranjang</button>
-                                </form>
-                            @else
-                                <button type="button" class="pp-btn-disabled" disabled>Stok Habis</button>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <p class="text-muted">Belum ada produk yang tersedia.</p>
-            @endforelse
-        </div>
-
-        <div class="mt-4">
-            {{ $products->links() }}
-        </div>
-    </div>
-
 @endif
 
 @endsection

@@ -61,6 +61,7 @@
             <div class="card border-0 shadow-sm p-4">
                 <h6 class="fw-bold mb-3" style="color: #2A324C;">Ubah Status</h6>
 
+            @if ($payment->status === 'pending')
                 <form action="{{ route('admin.payments.update', $payment->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -77,6 +78,9 @@
                         Simpan Status
                     </button>
                 </form>
+                @else
+                    <p class="small text-muted mb-0">Status pembayaran sudah final dan tidak dapat diubah lagi.</p>
+                @endif
 
                 <a href="{{ route('admin.payments.index') }}" class="btn btn-outline-secondary w-100 mt-2">
                     Kembali ke Daftar

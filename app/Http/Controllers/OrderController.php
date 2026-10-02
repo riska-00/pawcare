@@ -57,19 +57,26 @@ class OrderController extends Controller
             $totalPrice = 0;
 
             $productIds = $carts->pluck('product_id');
-            $lokcedProducts = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
+
+            // Mengunci data produk selama proses checkout
+            $lockedProducts = Product::whereIn('id', $productIds)
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
 
             foreach ($carts as $cart) {
-                if ($cart->quantity > $cart->product->stock) {
+                $product = $lockedProducts->get($cart->product_id);
+
+                if (!$product || $cart->quantity > $product->stock) {
                     DB::rollBack();
 
                     return back()->with(
                         'error',
-                        'Stok produk ' . $cart->product->name . ' tidak mencukupi.'
+                        'Stok produk ' . ($product->name ?? $cart->product->name) . ' tidak mencukupi.'
                     );
                 }
 
-                $totalPrice += $cart->product->price * $cart->quantity;
+                $totalPrice += $product->price * $cart->quantity;
             }
 
             $order = Order::create([
@@ -81,18 +88,17 @@ class OrderController extends Controller
             ]);
 
             foreach ($carts as $cart) {
+                $product = $lockedProducts->get($cart->product_id);
+
                 OrderDetail::create([
                     'order_id' => $order->id,
-                    'product_id' => $cart->product->id,
+                    'product_id' => $product->id,
                     'quantity' => $cart->quantity,
-                    'price' => $cart->product->price,
-                    'subtotal' => $cart->product->price * $cart->quantity,
+                    'price' => $product->price,
+                    'subtotal' => $product->price * $cart->quantity,
                 ]);
 
-                $cart->product->decrement(
-                    'stock',
-                    $cart->quantity
-                );
+                $product->decrement('stock', $cart->quantity);
             }
 
             Payment::create([
@@ -110,7 +116,10 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return redirect()->route('orders.show', $order->id)->with('success', 'Pesanan berhasil dibuat.');
+            return redirect()
+                ->route('orders.show', $order->id)
+                ->with('success', 'Pesanan berhasil dibuat.');
+
         } catch (\Exception $e) {
             DB::rollBack();
 
